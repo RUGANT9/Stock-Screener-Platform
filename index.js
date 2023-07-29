@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 const path = require("path");
 const app = express()
 const port = 3000
@@ -17,6 +18,9 @@ app.use(express.json());
 
 // Middleware setup
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// To use extra methods
+app.use(methodOverride('_method'));
 
 // Import routes
 const router = require('./api/routes');
