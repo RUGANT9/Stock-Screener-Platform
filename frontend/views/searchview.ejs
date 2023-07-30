@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/common.css">
+    <title>Search Result</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">RUGANT</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="positions">Positions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="profile">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="login">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h2>Stock Data</h2>
+    <div>
+        <form action="/searchview" method="GET">
+            <div class="col-sm-3">
+                <input type="text" placeholder="Enter Stock Ticker Symbol" name="symbol">
+                <select class="custom-select" id="inputGroupSelect01">
+                    <option selected>Choose...</option>
+                    <option value="1">Intraday</option>
+                    <option value="2">Daily</option>
+                </select>
+                <button type="submit">Search</button>
+            </div>
+
+        </form>
+
+
+        <% if (tempDataStore.length> 0) { %>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Company Name</th>
+                        <th scope="col">Interested</th>
+                        <th scope="col">Poll</th>
+                        <th scope="col">Your Vote</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            company name
+                        </td>
+                        <td>
+                            <button>Add to Watchlist</button>
+                        </td>
+                        <td>
+                            BUY
+                        </td>
+                        <td>
+                            <form action="/advice">
+                                <select name="advice" id="advice">
+                                    <option value="Buy">BUY</option>
+                                    <option value="Hold">HOLD</option>
+                                    <option value="Sell">SELL</option>
+                                </select>
+                                <button type="submit">Submit</button>
+                            </form>
+                        </td>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Open</th>
+                        <th scope="col">High</th>
+                        <th scope="col">Low</th>
+                        <th scope="col">Close</th>
+                        <th scope="col">Volume</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let i=0; i<5; i++) { %>
+                        <tr>
+                            <td>
+                                <%= tempDataStore[i].Date %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].open %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].high %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].low %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].close %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].volume %>
+                            </td>
+                        </tr>
+                        <% }; %>
+                </tbody>
+            </table>
+            <% }else { %>
+                <p>Search for a Stock</p>
+                <% } %>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

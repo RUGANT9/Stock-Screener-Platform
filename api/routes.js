@@ -1,9 +1,11 @@
 const express = require('express');
 const axios = require('axios');
 const _ = require('lodash');
+const Chart = require('chart.js');
 const User = require('../backend/db/user.js');
 const Watchlist = require('../backend/db/watchlist.js');
 const router = express.Router();
+
 
 // Routes will be defined here
 
@@ -17,15 +19,9 @@ router.get('/login', (req, res) => {
 // GET request for Dashboard Page
 router.get('/dashboard', async (req, res) => {
     try {
-        const watchlist = await Watchlist.find({});
-        if (!watchlist) {
-            console.error(err);
-            res.send('Error fetching data');
-        } else {
-            // Render the EJS template with the fetched data
-            console.log(watchlist)
-            res.render('dashboard', { watchlist });
-        }
+        const tempDataStore = [];
+        // Render the EJS template with the fetched data
+        res.render('dashboard', { tempDataStore });
     } catch (err) {
         console.error(err);
     }
@@ -88,43 +84,59 @@ router.post('/signup', async (req, res) => {
 });
 
 
-router.get('/dashboard/watchlist/add', async (req, res) => {
-    axios('https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=' + req.query.symbol + '&apikey=JP083ZCQZTWKDTSF')
-        .then(async (response) => {
-            const resp = response.data;
-            const yo = Object.keys(resp.bestMatches[0])
-            const newWatchlist = new Watchlist({
-                stock_symbol: (resp.bestMatches[0][yo[0]]),
-            }
-            );
-            try {
-                const resultant = await newWatchlist.save({});
-                if (!resultant) {
-                    console.error(err);
-                    res.send('Error saving data');
-                } else {
-                    console.log('Watchlist item saved successfully');
-                    res.redirect('/dashboard');
+router.get('/searchview', async (req, res) => {
+    if (req.query.select_time === 'Intraday') {
+        axios('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + req.query.symbol + '&interval=5min&apikey=JP083ZCQZTWKDTSF')
+            .then(async (response) => {
+                const data = response.data;
+                const tempDataStore = [];
+                const tSeries = data['Time Series (5min)'];
+                for (var tempData in tSeries) {
+                    // Here You get your Date
+                    // console.log("Your Date - " + tempData);
+                    // console.log(tSeries[tempData]);
+                    // console.log(tSeries[tempData]['1. open']);
+                    // console.log(tSeries[tempData]['2. high']);
+                    tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
                 }
-            } catch (err) {
-                console.error(err);
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+                res.render('searchview', { tempDataStore });
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+    else if (req.query.select_time === 'Daily') {
+        axios('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=' + req.query.symbol + '&apikey=JP083ZCQZTWKDTSF')
+            .then(async (response) => {
+                const data = response.data;
+                const tempDataStore = [];
+                const Dates = [];
+                const Close = [];
+                const tSeries = data['Time Series (Daily)'];
+                for (var tempData in tSeries) {
+                    // Here You get your Date
+                    Dates.push(tempData);
+                    // console.log(tSeries[tempData]);
+                    // console.log(tSeries[tempData]['1. open']);
+                    Close.push(tSeries[tempData]['4. close']);
+                    tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
+                }
+                const chart_data = {
+                    labels: Dates,
+                    values: Close,
+                };
+                res.render('searchview', { tempDataStore });
+
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
 });
 
-let information = 0;
-
-function updateInformation() {
-    information = _.random(50, 200);
-}
-
-// Endpoint to provide the updated information
-router.get('/api/information', (req, res) => {
-    res.json({ information });
+router.post('/advice', (req, res) => {
+    console.log('registered user advice');
 });
 
-setInterval(updateInformation, 2000);
+
 module.exports = router;

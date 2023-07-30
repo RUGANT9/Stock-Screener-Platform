@@ -35,48 +35,22 @@
         </div>
     </nav>
 
-    <h2>WatchList</h2>
+    <h2>Stock Data</h2>
     <div>
-        <form action="/dashboard/watchlist/add" method="GET">
-            <input type="text" placeholder="Enter Stock" name="symbol">
-            <button type="submit" style="padding-left: 2%; padding-right: 2%;">ADD</button>
+        <form action="/searchview" method="GET">
+            <input type="text" placeholder="Enter Stock Ticker Symbol" name="symbol">
+            <select name="select_time" id="select_time">
+                <option value="Intraday">Intraday</option>
+                <option value="Daily">Daily</option>
+            </select>
+            <button type="submit" style="padding-left: 2%; padding-right: 2%;">Search</button>
         </form>
-        <% if (watchlist.length> 0) { %>
-            <ul>
-                <% watchlist.forEach((item)=> { %>
-                    <li>
-                        <%= item.stock_symbol %>
-                            <p id="information"></p>
-                            <button type="submit" style="padding-left: 2%; padding-right: 2%;">BUY</button>
-                    </li>
-                    <% }); %>
-            </ul>
-            <% } else { %>
-                <p></p>
-                <% } %>
-    </div>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script>
-        const informationElement = document.getElementById('information');
-
-        function fetchInformation() {
-            fetch('/api/information')
-                .then(response => response.json())
-                .then(data => {
-                    informationElement.textContent = data.information;
-                })
-                .catch(error => {
-                    console.error('Error fetching information:', error);
-                });
-        }
-
-        // Fetch information initially and then every 5 seconds
-        fetchInformation();
-        setInterval(fetchInformation, 2000);
-    </script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 </body>
 
 </html>
+
+<!-- tempDataStore.forEach((item)=> -->
