@@ -1,2 +1,2 @@
-# Stock-Trading-Platform
-A web based application that enables users to trade in the stock market.
+# Stock-Screener-Platform
+A web based application that enables users to gain insights about stocks, provide and gain advice on stocks.
