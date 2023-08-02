@@ -1,6 +1,8 @@
 const express = require('express');
 const axios = require('axios');
 const _ = require('lodash');
+const passport = require('passport');
+const { isLoggedIn } = require('../middleware')
 const Chart = require('chart.js');
 const flash = require('connect-flash');
 const User = require('../backend/db/user.js');
@@ -16,9 +18,26 @@ router.get('/login', (req, res) => {
     res.render("login");
 });
 
+// POST request for Login Page
+router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
+    req.flash('success', 'welcome back!');
+    const redirectUrl = '/dashboard';
+    res.redirect(redirectUrl);
+})
+
+// GET request for Logout
+router.get('/logout', (req, res) => {
+    req.logout(function (err) {
+        if (err) {
+            return next(err);
+        }
+        req.flash('success', "Goodbye!");
+        res.redirect('/login');
+    });
+});
 
 // GET request for Dashboard Page
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard', isLoggedIn, async (req, res) => {
     if (req.query.given) {
         const given = req.query.given;
         try {
@@ -29,10 +48,11 @@ router.get('/dashboard', async (req, res) => {
             console.error(err);
         }
     } else {
+        const given = "";
         try {
             const tempDataStore = [];
             // Render the EJS template with the fetched data
-            res.render('dashboard', { tempDataStore });
+            res.render('dashboard', { tempDataStore, given });
         } catch (err) {
             console.error(err);
         }
@@ -53,9 +73,9 @@ router.get('/about', (req, res) => {
 
 
 // GET request for Profile Page
-router.get('/profile', async (req, res) => {
+router.get('/profile', isLoggedIn, async (req, res) => {
     try {
-        const profiles = await User.find({});
+        const profiles = await User.find({ _id: req.user._id });
         if (!profiles) {
             console.error(err);
             res.send('Error fetching data');
@@ -70,9 +90,9 @@ router.get('/profile', async (req, res) => {
 
 
 // GET request for Watchlist Page
-router.get('/watchlist', async (req, res) => {
+router.get('/watchlist', isLoggedIn, async (req, res) => {
     try {
-        const stocks_list = await Watchlist.find({});
+        const stocks_list = await Watchlist.find({ user_id: req.user._id });
         if (!stocks_list) {
             console.error(err);
             res.send('Error fetching data');
@@ -86,14 +106,16 @@ router.get('/watchlist', async (req, res) => {
 });
 
 
-router.post('/watchlist/add', async (req, res) => {
+router.post('/watchlist/add', isLoggedIn, async (req, res) => {
     // const ticker = Watchlist.find({ stock_symbol: req.body.stock_symbol });
     // if (ticker) {
     //     return req.flash("Error", "Stock already exists in the Watchlist");
     // }
-    const newWatchlist = new Watchlist(
-        req.body
-    );
+    console.log(req.body)
+    const newWatchlist = new Watchlist({
+        stock_symbol: req.body.stock_symbol,
+        user_id: req.user._id
+    });
     try {
         const result = await newWatchlist.save({});
         if (!result) {
@@ -111,25 +133,24 @@ router.post('/watchlist/add', async (req, res) => {
 
 // POST request for Signup Details
 router.post('/signup', async (req, res) => {
-    const newUser = new User(
-        req.body.user
-    );
     try {
-        const resultant = await newUser.save({});
-        if (!resultant) {
-            console.error(err);
-            res.send('Error saving data');
-        } else {
-            console.log('Data saved successfully');
-            res.redirect('/login');
-        }
-    } catch (err) {
-        console.error(err);
+        const { email, username, first_name, last_name, mobile_number, password } = req.body.user;
+        const user = new User({ email, username, first_name, last_name, mobile_number });
+        const registeredUser = await User.register(user, password);
+        req.login(registeredUser, err => {
+            if (err) console.log(err);
+            req.flash('success', 'Welcome to Yelp Camp!');
+            res.redirect('/dashboard');
+        })
+    } catch (e) {
+        console.log(e.message)
+        req.flash('error', e.message);
+        res.redirect('/login');
     }
 });
 
 
-router.get('/searchview', async (req, res) => {
+router.get('/searchview', isLoggedIn, async (req, res) => {
     symb = req.query.symbol;
     if (req.query.select_time === 'Intraday') {
         axios('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + symb + '&interval=5min&apikey=JP083ZCQZTWKDTSF')
@@ -182,6 +203,11 @@ router.get('/searchview', async (req, res) => {
     }
 });
 
+router.delete('/watchlist/delete/:id', async (req, res) => {
+    const { id } = req.params;
+    await Watchlist.findByIdAndDelete(id);
+    res.redirect('/watchlist')
+})
 
 
 module.exports = router;

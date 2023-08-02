@@ -10,14 +10,14 @@ body {
 
 input,
 button {
-    padding: 10px;
-    margin-bottom: 30px;
-    font-size: 30px;
+    padding: 7px;
+    margin-bottom: 20px;
+    font-size: 22px;
     font-weight: 500;
     background-color: rgb(243, 10, 10);
     color: black;
     transition: box-shadow 0.3s ease;
-    width: 400px;
+    width: 350px;
 
 }
 
@@ -33,7 +33,7 @@ select {
 h1,
 h2 {
     color: rgb(243, 10, 10);
-    font-size: 70px;
+    font-size: 50px;
     font-weight: 500;
     background-color: black;
 }
@@ -41,7 +41,6 @@ h2 {
 
 #form_login {
     padding-top: 10%;
-    border: 15%;
 }
 
 ::placeholder {
