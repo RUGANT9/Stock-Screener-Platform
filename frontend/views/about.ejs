@@ -7,6 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/common.css">
+    <style>
+        /* Custom CSS class for text wrap with background color */
+        .bg-wrap {
+            background-color: #0749ac;
+            /* Replace with your preferred background color */
+            padding: 20px;
+            /* Adjust padding as needed */
+        }
+    </style>
     <title>Rugant | About</title>
 </head>
 
@@ -22,22 +31,42 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="login">Login</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="signup">Signup</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="about">About</a>
-                </li>
             </ul>
         </div>
     </nav>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col">
+                <!-- Apply the custom bg-wrap class to the container div -->
+                <div class="card bg-wrap">
+                    <!-- Add the text-wrap class to the element containing the text -->
+                    <p class="card-text text-wrap">
+                        Rugant is a stock screener application.The application leverages real-time data to analyze
+                        thousands of
+                        stocks
+                        and present the most relevant results. It is a powerful tool designed to help investors and
+                        traders filter
+                        through a vast array of financial instruments to find potential investment opportunities that
+                        meet specific
+                        criteria.With its user-friendly interface and customizable filters, it empowers users to make
+                        informed
+                        decisions, saving them time and effort in their quest for profitable investments in the dynamic
+                        world of the
+                        stock market.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin: 4%;">
+        <a class="btn btn-primary" href="/signup" role="button" style="margin: 2%;">New User?</a>
+        <a class="btn btn-primary" href="/login" role="button">Login</a>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-    <p>
-        Rugant Trading Services is a platform that enables users to trade in the equity markets.
-    </p>
 
 </body>
 

@@ -1,34 +1,62 @@
-body,
-button {
-    background-color: rgb(25, 15, 70);
-    color: rgb(211, 187, 187);
+body {
+    background-image: url("assets/images/pexels-alesia-kozik-6772076.jpg");
+    /* Adjust the background image properties as needed */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
     text-align: center;
 }
 
-#form_signup,
-#form_login {
-    display: flexbox;
-    flex-direction: column;
-}
 
 input,
 button {
     padding: 10px;
     margin-bottom: 30px;
-    padding-left: 7%;
-    font-size: larger;
-    font-weight: 200;
+    font-size: 30px;
+    font-weight: 500;
+    background-color: rgb(243, 10, 10);
+    color: black;
+    transition: box-shadow 0.3s ease;
+    width: 400px;
+
 }
 
-button {
-    padding-left: 1%;
+select {
+    padding: 6px;
+    font-size: 30px;
+    font-weight: 500;
+    background-color: rgb(243, 10, 10);
+    color: black;
+    width: 300px;
 }
+
+h1,
+h2 {
+    color: rgb(243, 10, 10);
+    font-size: 70px;
+    font-weight: 500;
+    background-color: black;
+}
+
 
 #form_login {
     padding-top: 10%;
+    border: 15%;
 }
 
-#login_button:hover,
-#signup_button:hover {
-    background-color: rgb(0, 0, 0);
+::placeholder {
+    color: black;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+button:hover {
+    cursor: pointer;
+    box-shadow: 0 20px 50px rgba(10, 13, 211, 0.2);
+}
+
+a {
+    font-size: 20px;
+    font-weight: 800;
+    color: rgb(243, 10, 10);
 }

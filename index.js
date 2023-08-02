@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
+const flash = require('connect-flash');
 const methodOverride = require('method-override');
 const path = require("path");
 const app = express()
@@ -10,8 +11,14 @@ const port = 3000
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/frontend/views'));
 
+// Set the public assets/images for express
+app.use(express.static(__dirname + '/public'));
+
 // Set the css for express
 app.use(express.static(__dirname + '/frontend/css'));
+
+// To have Flash
+app.use(flash());
 
 // To parse json
 app.use(express.json());

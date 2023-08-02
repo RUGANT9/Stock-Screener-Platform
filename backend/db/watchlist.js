@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const watchlistSchema = new mongoose.Schema({
     stock_symbol: {
         type: String,
-        require: true
+        require: true,
+        unique: true,
     }
 });
 

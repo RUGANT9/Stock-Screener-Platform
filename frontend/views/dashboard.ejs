@@ -23,7 +23,7 @@
                     <a class="nav-link" href="dashboard">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="positions">Positions</a>
+                    <a class="nav-link" href="watchlist">WatchList</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="profile">Profile</a>
@@ -38,12 +38,17 @@
     <h2>Stock Data</h2>
     <div>
         <form action="/searchview" method="GET">
-            <input type="text" placeholder="Enter Stock Ticker Symbol" name="symbol">
-            <select name="select_time" id="select_time">
-                <option value="Intraday">Intraday</option>
-                <option value="Daily">Daily</option>
-            </select>
-            <button type="submit" style="padding-left: 2%; padding-right: 2%;">Search</button>
+            <% if (given.length> 0) { %>
+                <input type="text" placeholder="Enter Stock Ticker Symbol" name="symbol" value="<%= given %>">
+                <% } else { %>
+                    <input type="text" placeholder="Enter Stock Ticker Symbol" name="symbol">
+                    <% } %>
+                        <select name="select_time" id="select_time">
+                            <option value="" disabled selected>Choose Timeframe</option>
+                            <option value="Intraday">Intraday</option>
+                            <option value="Daily">Daily</option>
+                        </select>
+                        <button type="submit" style="padding-left: 2%; padding-right: 2%;">Search</button>
         </form>
 
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
