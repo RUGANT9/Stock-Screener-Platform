@@ -4,6 +4,8 @@ const _ = require('lodash');
 const passport = require('passport');
 const { isLoggedIn } = require('../middleware')
 const Chart = require('chart.js');
+const path = require("path");
+const fs = require('fs');
 const flash = require('connect-flash');
 const User = require('../backend/db/user.js');
 const Watchlist = require('../backend/db/watchlist.js');
@@ -152,6 +154,8 @@ router.post('/signup', async (req, res) => {
 
 router.get('/searchview', isLoggedIn, async (req, res) => {
     symb = req.query.symbol;
+    const timing = req.query.select_time;
+    req.session.timing = timing;
     if (req.query.select_time === 'Intraday') {
         axios('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + symb + '&interval=5min&apikey=JP083ZCQZTWKDTSF')
             .then(async (response) => {
@@ -167,7 +171,7 @@ router.get('/searchview', isLoggedIn, async (req, res) => {
                     // console.log(tSeries[tempData]['2. high']);
                     tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
                 }
-                res.render('searchview', { tempDataStore, symbol });
+                res.render('searchview', { tempDataStore, symbol, timing });
             })
             .catch((error) => {
                 console.log(error);
@@ -194,7 +198,63 @@ router.get('/searchview', isLoggedIn, async (req, res) => {
                     labels: Dates,
                     values: Close,
                 };
-                res.render('searchview', { tempDataStore, symbol });
+                res.render('searchview', { tempDataStore, symbol, timing });
+
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+    else if (req.query.select_time === 'Weekly') {
+        axios('https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=' + symb + '&apikey=JP083ZCQZTWKDTSF')
+            .then(async (response) => {
+                const symbol = req.query.symbol.toUpperCase();
+                const data = response.data;
+                const tempDataStore = [];
+                const Dates = [];
+                const Close = [];
+                const tSeries = data['Weekly Time Series'];
+                for (var tempData in tSeries) {
+                    // Here You get your Date
+                    Dates.push(tempData);
+                    // console.log(tSeries[tempData]);
+                    // console.log(tSeries[tempData]['1. open']);
+                    Close.push(tSeries[tempData]['4. close']);
+                    tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
+                }
+                const chart_data = {
+                    labels: Dates,
+                    values: Close,
+                };
+                res.render('searchview', { tempDataStore, symbol, timing });
+
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+    else if (req.query.select_time === 'Monthly') {
+        axios('https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=' + symb + '&apikey=JP083ZCQZTWKDTSF')
+            .then(async (response) => {
+                const symbol = req.query.symbol.toUpperCase();
+                const data = response.data;
+                const tempDataStore = [];
+                const Dates = [];
+                const Close = [];
+                const tSeries = data['Monthly Time Series'];
+                for (var tempData in tSeries) {
+                    // Here You get your Date
+                    Dates.push(tempData);
+                    // console.log(tSeries[tempData]);
+                    // console.log(tSeries[tempData]['1. open']);
+                    Close.push(tSeries[tempData]['4. close']);
+                    tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
+                }
+                const chart_data = {
+                    labels: Dates,
+                    values: Close,
+                };
+                res.render('searchview', { tempDataStore, symbol, timing });
 
             })
             .catch((error) => {
@@ -203,11 +263,53 @@ router.get('/searchview', isLoggedIn, async (req, res) => {
     }
 });
 
+
 router.delete('/watchlist/delete/:id', async (req, res) => {
     const { id } = req.params;
     await Watchlist.findByIdAndDelete(id);
     res.redirect('/watchlist')
 })
+
+
+router.get('/download', async (req, res) => {
+    const time = req.query.timing;
+    if (time === 'Intraday') {
+        var url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + req.query.stock_symbol + '&interval=5min&apikey=JP083ZCQZTWKDTSF&datatype=csv';
+    }
+    else if (time === 'Daily') {
+        var url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=' + req.query.stock_symbol + '&apikey=JP083ZCQZTWKDTSF&datatype=csv';
+    }
+    else if (time === 'Weekly') {
+        var url = 'https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=' + req.query.stock_symbol + '&apikey=JP083ZCQZTWKDTSF&datatype=csv';
+    }
+    else {
+        var url = 'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=' + req.query.stock_symbol + '&apikey=JP083ZCQZTWKDTSF&datatype=csv';
+    }
+
+    var response = await axios.get(url)
+
+    try {
+        const filePath = path.join(__dirname, 'temp.csv'); // You can change the filename or location
+        fs.writeFileSync(filePath, response.data);
+
+        // Set the appropriate headers for the response
+        res.setHeader('Content-Disposition', 'attachment; filename="data.csv"');
+        res.setHeader('Content-Type', 'text/csv');
+
+        // Stream the file data to the response
+        const fileStream = fs.createReadStream(filePath);
+        fileStream.pipe(res);
+
+        // Clean up: remove the temporary file after streaming it to the response
+        fileStream.on('close', () => {
+            fs.unlinkSync(filePath);
+        });
+    } catch (error) {
+        console.error('Error fetching or streaming CSV:', error);
+        res.status(500).send('Error fetching or streaming CSV');
+    }
+
+});
 
 
 module.exports = router;
