@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/common.css">
     <title>Search Result</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -63,51 +64,75 @@
                             <%= symbol %>
                         </td>
                         <td>
-                            <form action="/watchlist/add" method="POST">
-                                <input type="hidden" name="stock_symbol" value="<%= symbol %>">
-                                <button type="submit" style="background-color: black; color: red; padding: 5px;">Add to
-                                    Watchlist</button>
-                            </form>
+                            <% if (show_add_delete.length===0) { %>
+                                <form action="/watchlist/add" method="POST">
+                                    <input type="hidden" name="stock_symbol" value="<%= symbol %>">
+                                    <button type="submit" style="background-color: black; color: red; padding: 5px;">Add
+                                        to
+                                        Watchlist</button>
+                                </form>
+                                <% } else { %>
+                                    <form action="/watchlist/delete/<%= show_add_delete %>?_method=DELETE"
+                                        method="POST">
+
+                                        <button type="submit"
+                                            style="background-color: black; color: red; padding: 3px; font-size: 20px;">Delete
+                                            from
+                                            Watchlist</button>
+                                    </form>
+                                    <% } %>
+                                        <form action="/download" method="GET">
+                                            <input type="hidden" name="timing" value="<%= timing %>">
+                                            <input type="hidden" name="stock_symbol" value="<%= symbol %>">
+                                            <button
+                                                style="background-color: black; color: red; padding: 3px; font-size: 20px;">Download
+                                                Data</button>
+                                        </form>
                         </td>
                 </tbody>
             </table>
-            <form action="/download" method="GET">
-                <input type="hidden" name="timing" value="<%= timing %>">
-                <input type="hidden" name="stock_symbol" value="<%= symbol %>">
-                <button style="background-color: red; color: black; padding: 5px; font-size: 30px;">Download
-                    Data</button>
-            </form>
+
+            <canvas id="myChart" width="400" height="200" style="background-color: red; color: black;"></canvas>
+            <var symbol="<%= symbol %>" id="symbolize"></var>
+            <var frame="<%= timing %>" id="timize"></var>
+
+            <textarea name="Description" id="Description" cols="150" rows="10"
+                style="color: black; background-color: red; font-size: 17px; font-weight: 400px; margin: 10px;">
+                Company Description
+                <%= tempDataStore[0].Description %>
+            </textarea>
+
             <table class="table table-bordered" style="background-color: rgb(243, 10, 10); color: black;">
                 <thead>
                     <tr>
-                        <th scope=" col">Date</th>
-                        <th scope="col">Open</th>
-                        <th scope="col">High</th>
-                        <th scope="col">Low</th>
-                        <th scope="col">Close</th>
-                        <th scope="col">Volume</th>
+                        <th scope=" col">Name</th>
+                        <th scope="col">Book Value</th>
+                        <th scope="col">Sector</th>
+                        <th scope="col">Market Capitalization</th>
+                        <th scope="col">EPS</th>
+                        <th scope="col">Dividend Per Share</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% for (let i=0; i<5; i++) { %>
+                    <% for (let i=0; i<1; i++) { %>
                         <tr>
                             <td>
-                                <%= tempDataStore[i].Date %>
+                                <%= tempDataStore[i].Name %>
                             </td>
                             <td>
-                                <%= tempDataStore[i].open %>
+                                <%= tempDataStore[i].BookValue %>
                             </td>
                             <td>
-                                <%= tempDataStore[i].high %>
+                                <%= tempDataStore[i].Sector %>
                             </td>
                             <td>
-                                <%= tempDataStore[i].low %>
+                                <%= tempDataStore[i].MarketCapitalization %>
                             </td>
                             <td>
-                                <%= tempDataStore[i].close %>
+                                <%= tempDataStore[i].EPS %>
                             </td>
                             <td>
-                                <%= tempDataStore[i].volume %>
+                                <%= tempDataStore[i].DividendPerShare %>
                             </td>
                         </tr>
                         <% }; %>
@@ -122,6 +147,9 @@
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="application/javascript" src="/script.js"></script>
+
 
 </body>
 

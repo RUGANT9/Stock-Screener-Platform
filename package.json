@@ -15,14 +15,18 @@
     "body": "^5.1.0",
     "body-parser": "^1.20.2",
     "chart.js": "^4.3.2",
+    "chartjs-adapter-moment": "^1.0.1",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.6",
+    "date-fns": "^2.30.0",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "joi": "^17.9.2",
+    "JSON": "^1.0.0",
     "lodash": "^4.17.21",
     "method-override": "^3.0.0",
+    "moment": "^2.29.4",
     "mongoose": "^7.3.1",
     "morgan": "^1.10.0",
     "node-fetch": "^3.3.2",
@@ -30,5 +34,9 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^8.0.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
   }
 }

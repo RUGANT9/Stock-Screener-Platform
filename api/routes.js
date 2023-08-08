@@ -7,7 +7,10 @@ const Chart = require('chart.js');
 const path = require("path");
 const fs = require('fs');
 const flash = require('connect-flash');
+const moment = require('moment');
 const User = require('../backend/db/user.js');
+const { format, parse } = require('date-fns');
+const chartered = require('chartjs-adapter-moment');
 const Watchlist = require('../backend/db/watchlist.js');
 const router = express.Router();
 
@@ -109,11 +112,6 @@ router.get('/watchlist', isLoggedIn, async (req, res) => {
 
 
 router.post('/watchlist/add', isLoggedIn, async (req, res) => {
-    // const ticker = Watchlist.find({ stock_symbol: req.body.stock_symbol });
-    // if (ticker) {
-    //     return req.flash("Error", "Stock already exists in the Watchlist");
-    // }
-    console.log(req.body)
     const newWatchlist = new Watchlist({
         stock_symbol: req.body.stock_symbol,
         user_id: req.user._id
@@ -152,109 +150,120 @@ router.post('/signup', async (req, res) => {
 });
 
 
+// INFO
 router.get('/searchview', isLoggedIn, async (req, res) => {
     symb = req.query.symbol;
+    const lister = await Watchlist.find({ user_id: req.user._id });
+    var show_add_delete = "";
+    lister.forEach(item => {
+        if (symb === item.stock_symbol) {
+            show_add_delete = item._id
+        }
+    })
     const timing = req.query.select_time;
+    const tempDataStore = [];
     req.session.timing = timing;
-    if (req.query.select_time === 'Intraday') {
-        axios('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + symb + '&interval=5min&apikey=JP083ZCQZTWKDTSF')
+    axios('https://www.alphavantage.co/query?function=OVERVIEW&symbol=' + symb + '&apikey=JP083ZCQZTWKDTSF')
+        .then(async (response) => {
+            const symbol = req.query.symbol.toUpperCase();
+            const data = response.data;
+            tempDataStore.push({ "Name": data.Name, "BookValue": data.BookValue, "Sector": data.Sector, "MarketCapitalization": data.MarketCapitalization, "EPS": data.EPS, "DividendPerShare": data.DividendPerShare, "Description": data.Description })
+            res.render('searchview', { tempDataStore, symbol, timing, show_add_delete });
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+});
+
+
+// Charting
+router.get('/chart-data', async (req, res) => {
+    if (req.query.timing === 'Intraday') {
+        axios('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + req.query.symbol.toUpperCase() + '&interval=5min&apikey=JP083ZCQZTWKDTSF')
             .then(async (response) => {
                 const symbol = req.query.symbol.toUpperCase();
                 const data = response.data;
-                const tempDataStore = [];
                 const tSeries = data['Time Series (5min)'];
+                var dates = [];
+                var values = [];
+                var i = 0;
                 for (var tempData in tSeries) {
-                    // Here You get your Date
-                    // console.log("Your Date - " + tempData);
-                    // console.log(tSeries[tempData]);
-                    // console.log(tSeries[tempData]['1. open']);
-                    // console.log(tSeries[tempData]['2. high']);
-                    tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
+                    dates.push(i);
+                    values.push(tSeries[tempData]['4. close']);
+                    i = i + 1;
+                    //tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
                 }
-                res.render('searchview', { tempDataStore, symbol, timing });
+                const responseData = { datesss: dates, valuesss: values }
+                res.json(responseData);
+
             })
             .catch((error) => {
                 console.log(error);
             })
     }
-    else if (req.query.select_time === 'Daily') {
-        axios('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=' + symb + '&apikey=JP083ZCQZTWKDTSF')
+    else if (req.query.timing === 'Daily') {
+        axios('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=' + req.query.symbol.toUpperCase() + '&apikey=JP083ZCQZTWKDTSF')
             .then(async (response) => {
                 const symbol = req.query.symbol.toUpperCase();
                 const data = response.data;
-                const tempDataStore = [];
-                const Dates = [];
-                const Close = [];
                 const tSeries = data['Time Series (Daily)'];
+                var dates = [];
+                var values = [];
+                var i = 0;
                 for (var tempData in tSeries) {
-                    // Here You get your Date
-                    Dates.push(tempData);
-                    // console.log(tSeries[tempData]);
-                    // console.log(tSeries[tempData]['1. open']);
-                    Close.push(tSeries[tempData]['4. close']);
-                    tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
+                    dates.push(i);
+                    values.push(tSeries[tempData]['4. close']);
+                    i = i + 1;
+                    //tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
                 }
-                const chart_data = {
-                    labels: Dates,
-                    values: Close,
-                };
-                res.render('searchview', { tempDataStore, symbol, timing });
+                const responseData = { datesss: dates, valuesss: values }
+                res.json(responseData);
 
             })
             .catch((error) => {
                 console.log(error);
             })
     }
-    else if (req.query.select_time === 'Weekly') {
-        axios('https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=' + symb + '&apikey=JP083ZCQZTWKDTSF')
+    else if (req.query.timing === 'Weekly') {
+        axios('https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=' + req.query.symbol.toUpperCase() + '&apikey=JP083ZCQZTWKDTSF')
             .then(async (response) => {
                 const symbol = req.query.symbol.toUpperCase();
                 const data = response.data;
-                const tempDataStore = [];
-                const Dates = [];
-                const Close = [];
                 const tSeries = data['Weekly Time Series'];
+                var dates = [];
+                var values = [];
+                var i = 0;
                 for (var tempData in tSeries) {
-                    // Here You get your Date
-                    Dates.push(tempData);
-                    // console.log(tSeries[tempData]);
-                    // console.log(tSeries[tempData]['1. open']);
-                    Close.push(tSeries[tempData]['4. close']);
-                    tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
+                    dates.push(i);
+                    values.push(tSeries[tempData]['4. close']);
+                    i = i + 1;
+                    //tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
                 }
-                const chart_data = {
-                    labels: Dates,
-                    values: Close,
-                };
-                res.render('searchview', { tempDataStore, symbol, timing });
+                const responseData = { datesss: dates, valuesss: values }
+                res.json(responseData);
 
             })
             .catch((error) => {
                 console.log(error);
             })
     }
-    else if (req.query.select_time === 'Monthly') {
-        axios('https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=' + symb + '&apikey=JP083ZCQZTWKDTSF')
+    else if (req.query.timing === 'Monthly') {
+        axios('https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=' + req.query.symbol.toUpperCase() + '&apikey=JP083ZCQZTWKDTSF')
             .then(async (response) => {
                 const symbol = req.query.symbol.toUpperCase();
                 const data = response.data;
-                const tempDataStore = [];
-                const Dates = [];
-                const Close = [];
                 const tSeries = data['Monthly Time Series'];
+                var dates = [];
+                var values = [];
+                var i = 0;
                 for (var tempData in tSeries) {
-                    // Here You get your Date
-                    Dates.push(tempData);
-                    // console.log(tSeries[tempData]);
-                    // console.log(tSeries[tempData]['1. open']);
-                    Close.push(tSeries[tempData]['4. close']);
-                    tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
+                    dates.push(i);
+                    values.push(tSeries[tempData]['4. close']);
+                    i = i + 1;
+                    //tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
                 }
-                const chart_data = {
-                    labels: Dates,
-                    values: Close,
-                };
-                res.render('searchview', { tempDataStore, symbol, timing });
+                const responseData = { datesss: dates, valuesss: values }
+                res.json(responseData);
 
             })
             .catch((error) => {
