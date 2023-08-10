@@ -3,14 +3,9 @@ const axios = require('axios');
 const _ = require('lodash');
 const passport = require('passport');
 const { isLoggedIn } = require('../middleware')
-const Chart = require('chart.js');
 const path = require("path");
 const fs = require('fs');
-const flash = require('connect-flash');
-const moment = require('moment');
 const User = require('../backend/db/user.js');
-const { format, parse } = require('date-fns');
-const chartered = require('chartjs-adapter-moment');
 const Watchlist = require('../backend/db/watchlist.js');
 const router = express.Router();
 
@@ -167,7 +162,7 @@ router.get('/searchview', isLoggedIn, async (req, res) => {
         .then(async (response) => {
             const symbol = req.query.symbol.toUpperCase();
             const data = response.data;
-            tempDataStore.push({ "Name": data.Name, "BookValue": data.BookValue, "Sector": data.Sector, "MarketCapitalization": data.MarketCapitalization, "EPS": data.EPS, "DividendPerShare": data.DividendPerShare, "Description": data.Description })
+            tempDataStore.push({ "Name": data.Name, "BookValue": data.BookValue, "Sector": data.Sector, "MarketCapitalization": data.MarketCapitalization, "EPS": data.EPS, "DividendPerShare": data.DividendPerShare, "Description": data.Description, "PEGRatio": data.PEGRatio, "ReturnOnEquityTTM": data.ReturnOnEquityTTM, "GrossProfitTTM": data.GrossProfitTTM, "WeekHigh": data['52WeekHigh'], "WeekLow": data['52WeekLow'], "DayMovingAverage": data['50DayMovingAverage'] });
             res.render('searchview', { tempDataStore, symbol, timing, show_add_delete });
         })
         .catch((error) => {

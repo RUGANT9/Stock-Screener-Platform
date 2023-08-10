@@ -37,57 +37,65 @@
 
     <h2>Stock Data</h2>
     <div>
-        <form action="/searchview" method="GET">
-            <input type="text" placeholder="Enter Stock Ticker Symbol" name="symbol">
-            <select name="select_time" id="select_time" required="true">
-                <option value="" disabled selected>Choose Timeframe</option>
-                <option value="Intraday">Intraday</option>
-                <option value="Daily">Daily</option>
-                <option value="Weekly">Weekly</option>
-                <option value="Monthly">Monthly</option>
-            </select>
-            <button type="submit" style="padding-left: 2%; padding-right: 2%;">Search</button>
-        </form>
+        <div style="background-color: red; padding-top: 20px; margin-bottom: 10px;">
+            <form action="/searchview" method="GET">
+                <input type="text" placeholder="Enter Stock Ticker Symbol" name="symbol"
+                    style="background-color: black; color: red;">
+                <select name="select_time" id="select_time" required="true">
+                    <option value="" disabled selected>Choose Timeframe</option>
+                    <option value="Intraday">Intraday</option>
+                    <option value="Daily">Daily</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Monthly">Monthly</option>
+                </select>
+                <br>
+                <button type="submit"
+                    style="padding-left: 2%; padding-right: 2%; background-color: black;color: red;">Search</button>
+            </form>
+        </div>
 
 
         <% if (tempDataStore.length> 0) { %>
-            <table class="table table-bordered" style="background-color: rgb(243, 10, 10); color: black;">
+            <table class="table table-bordered" style="background-color: red; color: black;">
                 <thead>
                     <tr>
-                        <th scope="col" style="font-size: 25px;">Company Name</th>
-                        <th scope="col" style="font-size: 25px;">Interested</th>
+                        <th scope="col" style="font-size: 20px;">Company Name</th>
+                        <th scope="col" style="font-size: 20px;">Interested</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="font-size: 30px; font-weight: 700;">
+                        <td style="font-size: 20px; font-weight: 700;">
                             <%= symbol %>
                         </td>
                         <td>
-                            <% if (show_add_delete.length===0) { %>
-                                <form action="/watchlist/add" method="POST">
-                                    <input type="hidden" name="stock_symbol" value="<%= symbol %>">
-                                    <button type="submit" style="background-color: black; color: red; padding: 5px;">Add
-                                        to
-                                        Watchlist</button>
-                                </form>
-                                <% } else { %>
-                                    <form action="/watchlist/delete/<%= show_add_delete %>?_method=DELETE"
-                                        method="POST">
-
+                            <div style="display: flex;">
+                                <% if (show_add_delete.length===0) { %>
+                                    <form action="/watchlist/add" method="POST">
+                                        <input type="hidden" name="stock_symbol" value="<%= symbol %>">
                                         <button type="submit"
-                                            style="background-color: black; color: red; padding: 3px; font-size: 20px;">Delete
-                                            from
+                                            style="background-color: black; color: red; padding: 3px; font-size: 20px; margin: 5px;">Add
+                                            to
                                             Watchlist</button>
                                     </form>
-                                    <% } %>
-                                        <form action="/download" method="GET">
-                                            <input type="hidden" name="timing" value="<%= timing %>">
-                                            <input type="hidden" name="stock_symbol" value="<%= symbol %>">
-                                            <button
-                                                style="background-color: black; color: red; padding: 3px; font-size: 20px;">Download
-                                                Data</button>
+                                    <% } else { %>
+                                        <form action="/watchlist/delete/<%= show_add_delete %>?_method=DELETE"
+                                            method="POST">
+
+                                            <button type="submit"
+                                                style="background-color: black; color: red; padding: 3px; font-size: 20px; margin: 5px;">Delete
+                                                from
+                                                Watchlist</button>
                                         </form>
+                                        <% } %>
+                                            <form action="/download" method="GET">
+                                                <input type="hidden" name="timing" value="<%= timing %>">
+                                                <input type="hidden" name="stock_symbol" value="<%= symbol %>">
+                                                <button
+                                                    style="background-color: black; color: red; padding: 3px; font-size: 20px; margin: 5px;">Download
+                                                    Data</button>
+                                            </form>
+                            </div>
                         </td>
                 </tbody>
             </table>
@@ -96,13 +104,23 @@
             <var symbol="<%= symbol %>" id="symbolize"></var>
             <var frame="<%= timing %>" id="timize"></var>
 
-            <textarea name="Description" id="Description" cols="150" rows="10"
-                style="color: black; background-color: red; font-size: 17px; font-weight: 400px; margin: 10px;">
-                Company Description
-                <%= tempDataStore[0].Description %>
-            </textarea>
-
-            <table class="table table-bordered" style="background-color: rgb(243, 10, 10); color: black;">
+            <div class="container mt-5" style="background-color: red;">
+                <div class="row">
+                    <div class="col">
+                        <div>
+                            <p class="card-text text-wrap"
+                                style="font-size: 20px; font-weight: bold; color: black; padding: 40px;">
+                                <%= tempDataStore[0].Description %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <p style="color: red; background-color: black; font-weight: bold; font-size: 20px;padding: 10px;">DETAILS
+            </p>
+            <table class="table table-bordered" style="background-color: red; color: black;">
                 <thead>
                     <tr>
                         <th scope=" col">Name</th>
@@ -133,6 +151,42 @@
                             </td>
                             <td>
                                 <%= tempDataStore[i].DividendPerShare %>
+                            </td>
+                        </tr>
+                        <% }; %>
+                </tbody>
+            </table>
+            <table class="table table-bordered" style="background-color: red; color: black;">
+                <thead>
+                    <tr>
+                        <th scope=" col">PEG ratio</th>
+                        <th scope="col">Return on Equity</th>
+                        <th scope="col">Gross Profit</th>
+                        <th scope="col">52 Week High</th>
+                        <th scope="col">52 Week Low</th>
+                        <th scope="col">50 Day Moving Average</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let i=0; i<1; i++) { %>
+                        <tr>
+                            <td>
+                                <%= tempDataStore[i].PEGRatio %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].ReturnOnEquityTTM %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].GrossProfitTTM %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].WeekHigh %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].WeekLow %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].DayMovingAverage %>
                             </td>
                         </tr>
                         <% }; %>

@@ -12,7 +12,7 @@ input,
 button {
     padding: 7px;
     margin-bottom: 20px;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 500;
     background-color: rgb(243, 10, 10);
     color: black;
@@ -22,18 +22,18 @@ button {
 }
 
 select {
-    padding: 6px;
-    font-size: 30px;
-    font-weight: 500;
-    background-color: rgb(243, 10, 10);
-    color: black;
+    padding: 5px;
+    font-size: 22px;
+    font-weight: bold;
+    background-color: black;
+    color: red;
     width: 300px;
 }
 
 h1,
 h2 {
     color: rgb(243, 10, 10);
-    font-size: 50px;
+    font-size: 40px;
     font-weight: 500;
     background-color: black;
 }
@@ -43,11 +43,6 @@ h2 {
     padding-top: 10%;
 }
 
-::placeholder {
-    color: black;
-    font-size: 30px;
-    font-weight: 500;
-}
 
 button:hover {
     cursor: pointer;
@@ -58,4 +53,23 @@ a {
     font-size: 20px;
     font-weight: 800;
     color: rgb(243, 10, 10);
+}
+
+td {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+::placeholder {
+    color: red;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+#username {
+    ::placeholder {
+        color: black;
+    }
+
 }

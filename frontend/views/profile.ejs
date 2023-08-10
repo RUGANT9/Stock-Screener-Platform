@@ -34,29 +34,29 @@
             <a class="nav-link" href="logout" style="color: black;">Logout</a>
         </div>
     </nav>
-
+    <p style="background-color: black; color: red; height: 50px; font-weight: bolder; font-size: 20px;">User Details</p>
     <% if (profiles.length> 0) { %>
         <ul>
             <% profiles.forEach((item)=> { %>
                 <li
-                    style="background-color: red; color: black; padding: 15px; font-size: 30px; font-weight: 1000; text-align: left;">
-                    First Name - <%= item.first_name %>
+                    style="background-color: red; color: black; padding: 10px; font-size: 20px; font-weight: 1000; text-align: left;">
+                    First Name: <%= item.first_name %>
                 </li>
                 <li
-                    style="background-color: red; color: black; padding: 15px; font-size: 30px; font-weight: 1000; text-align: left;">
-                    Last Name - <%= item.last_name %>
+                    style="background-color: red; color: black; padding: 10px; font-size: 20px; font-weight: 1000; text-align: left;">
+                    Last Name: <%= item.last_name %>
                 </li>
                 <li
-                    style="background-color: red; color: black; padding: 15px; font-size: 30px; font-weight: 1000; text-align: left;">
-                    Email - <%= item.email %>
+                    style="background-color: red; color: black; padding: 10px; font-size: 20px; font-weight: 1000; text-align: left;">
+                    Email: <%= item.email %>
                 </li>
                 <li
-                    style="background-color: red; color: black; padding: 15px; font-size: 30px; font-weight: 1000; text-align: left;">
-                    Username - <%= item.username %>
+                    style="background-color: red; color: black; padding: 10px; font-size: 20px; font-weight: 1000; text-align: left;">
+                    Username: <%= item.username %>
                 </li>
                 <li
-                    style="background-color: red; color: black; padding: 15px; font-size: 30px; font-weight: 1000; text-align: left;">
-                    Mobile Number - <%= item.mobile_number %>
+                    style="background-color: red; color: black; padding: 10px; font-size: 20px; font-weight: 1000; text-align: left;">
+                    Mobile Number: <%= item.mobile_number %>
                 </li>
                 <% }); %>
         </ul>

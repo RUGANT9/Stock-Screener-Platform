@@ -36,13 +36,14 @@
     </nav>
 
     <h2>Stock Data</h2>
-    <div>
+    <div style="background-color: red; padding-top: 20px;">
         <form action="/searchview" method="GET">
             <% if (given.length> 0) { %>
                 <input type="text" placeholder="Enter Stock Ticker Symbol" name="symbol" value="<%= given %>"
-                    style="width: 400px;">
+                    style="width: 400px; color: red; background-color: black;">
                 <% } else { %>
-                    <input type="text" placeholder="Enter Stock Ticker Symbol" name="symbol" style="width: 400px;">
+                    <input type="text" placeholder="Enter Stock Ticker Symbol" name="symbol"
+                        style="width: 400px; padding: 5px; font-weight: bold; background-color: black; color: red;">
                     <% } %>
                         <select name="select_time" id="select_time">
                             <option value="" disabled selected>Choose Timeframe</option>
@@ -51,8 +52,10 @@
                             <option value="Weekly">Weekly</option>
                             <option value="Monthly">Monthly</option>
                         </select>
-                        <button type="submit"
-                            style="padding-left: 2%; padding-right: 2%; font-size: 25px; font-weight: 700;">Search</button>
+                        <p><button type="submit"
+                                style="padding: 3px; font-size: 20px; font-weight: bold; background-color: black; color: red;">SEARCH</button>
+                        </p>
+
         </form>
 
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
