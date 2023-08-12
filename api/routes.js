@@ -20,7 +20,6 @@ router.get('/login', (req, res) => {
 
 // POST request for Login Page
 router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
-    req.flash('success', 'welcome back!');
     const redirectUrl = '/dashboard';
     res.redirect(redirectUrl);
 })
@@ -134,12 +133,10 @@ router.post('/signup', async (req, res) => {
         const registeredUser = await User.register(user, password);
         req.login(registeredUser, err => {
             if (err) console.log(err);
-            req.flash('success', 'Welcome to Yelp Camp!');
             res.redirect('/dashboard');
         })
     } catch (e) {
         console.log(e.message)
-        req.flash('error', e.message);
         res.redirect('/login');
     }
 });
@@ -151,19 +148,50 @@ router.get('/searchview', isLoggedIn, async (req, res) => {
     const lister = await Watchlist.find({ user_id: req.user._id });
     var show_add_delete = "";
     lister.forEach(item => {
-        if (symb === item.stock_symbol) {
+        if (symb.toUpperCase() === item.stock_symbol) {
             show_add_delete = item._id
         }
     })
     const timing = req.query.select_time;
     const tempDataStore = [];
     req.session.timing = timing;
+    const news_feed = await axios('https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=' + symb + '&apikey=JP083ZCQZTWKDTSF')
+    const items = parseInt(news_feed.data.items);
+    const feed = news_feed.data.feed;
+    var sentiment = 0;
+    for (var i = 0; i < items; i++) {
+        sentiment = sentiment + feed[i].overall_sentiment_score;
+    }
+    var sent_avg = sentiment * 1.0 / items;
+    var sent_exp = "";
+    var angle = 0;
+    if (sent_avg <= -0.35) {
+        sent_exp = "Bearish";
+        angle = -40;
+    }
+    else if (sent_avg > -0.35 && sent_avg <= -0.15) {
+        sent_exp = "Somewhat Bearish";
+        angle = -20;
+    }
+    else if (sent_avg > -0.15 && sent_avg < 0.15) {
+        sent_exp = "Neutral";
+        angle = 0;
+    }
+    else if (sent_avg >= 0.15 && sent_avg < 0.35) {
+        sent_exp = "Somewhat Bullish";
+        angle = 20;
+    }
+    else if (sent_avg >= 0.35) {
+        sent_exp = "Bullish";
+        angle = 40;
+    }
+
     axios('https://www.alphavantage.co/query?function=OVERVIEW&symbol=' + symb + '&apikey=JP083ZCQZTWKDTSF')
         .then(async (response) => {
             const symbol = req.query.symbol.toUpperCase();
             const data = response.data;
             tempDataStore.push({ "Name": data.Name, "BookValue": data.BookValue, "Sector": data.Sector, "MarketCapitalization": data.MarketCapitalization, "EPS": data.EPS, "DividendPerShare": data.DividendPerShare, "Description": data.Description, "PEGRatio": data.PEGRatio, "ReturnOnEquityTTM": data.ReturnOnEquityTTM, "GrossProfitTTM": data.GrossProfitTTM, "WeekHigh": data['52WeekHigh'], "WeekLow": data['52WeekLow'], "DayMovingAverage": data['50DayMovingAverage'] });
-            res.render('searchview', { tempDataStore, symbol, timing, show_add_delete });
+            res.render('searchview', { tempDataStore, symbol, timing, show_add_delete, sent_exp, angle });
         })
         .catch((error) => {
             console.log(error);

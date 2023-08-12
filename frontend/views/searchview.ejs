@@ -103,20 +103,34 @@
             <canvas id="myChart" width="400" height="200" style="background-color: red; color: black;"></canvas>
             <var symbol="<%= symbol %>" id="symbolize"></var>
             <var frame="<%= timing %>" id="timize"></var>
-
-            <div class="container mt-5" style="background-color: red;">
-                <div class="row">
-                    <div class="col">
-                        <div>
-                            <p class="card-text text-wrap"
-                                style="font-size: 20px; font-weight: bold; color: black; padding: 40px;">
-                                <%= tempDataStore[0].Description %>
-                            </p>
+            <var angling="<%= angle %>" id="angler"></var>
+            <div style="display: flex;
+            justify-content: space-between;">
+                <div class="container mt-3" style="background-color: red; max-width: 50%;">
+                    <p style="color: black; font-weight: bold; font-size: 18px;">COMPANY DESCRIPTION</p>
+                    <div class="row">
+                        <div class="col">
+                            <div>
+                                <p class="card-text text-wrap"
+                                    style="font-size: 20px; font-weight: bold; color: black; padding: 40px;">
+                                    <%= tempDataStore[0].Description %>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="speedometer">
+                    <p style="color: black; font-weight: bold; font-size: 18px;">MARKET SENTIMENT</p>
+                    <div class="stick-figure"></div>
+                    <div class="values">
+                        <div class="value" style="color: black; font-weight: bold;">Bearish</div>
+                        <div class="value" style="color: black; font-weight: bold;">Mild Bearish</div>
+                        <div class="value" style="color: black; font-weight: bold;">Neutral</div>
+                        <div class="value" style="color: black; font-weight: bold;">Mild Bullish</div>
+                        <div class="value" style="color: black; font-weight: bold;">Bullish</div>
+                    </div>
+                </div>
             </div>
-            <br>
             <br>
             <p style="color: red; background-color: black; font-weight: bold; font-size: 20px;padding: 10px;">DETAILS
             </p>

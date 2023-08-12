@@ -1,6 +1,7 @@
 // Create the chart using Chart.js
 const symboliz = document.getElementById('symbolize').getAttribute('symbol')
 const timez = document.getElementById('timize').getAttribute('frame')
+const angle = document.getElementById('angler').getAttribute('angling')
 
 Promise.all([
     fetch('/chart-data?symbol=' + symboliz + '&timing=' + timez)
@@ -38,3 +39,9 @@ Promise.all([
 
 ])
 
+const stickFigure = document.querySelector('.stick-figure');
+
+// Set the rotation angle (in degrees)
+const rotationAngle = angle;
+
+stickFigure.style.transform = `translateX(-50%) rotate(${rotationAngle}deg)`;

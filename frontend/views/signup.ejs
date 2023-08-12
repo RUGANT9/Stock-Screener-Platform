@@ -33,22 +33,32 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
     <h2>SIGNUP</h2>
-    <form action="/signup" id="form_signup" method="POST">
-        <input type="text" name="user[first_name]" id="firstname_signup" required="true" placeholder="First Name">
-        <br>
-        <input type="text" name="user[last_name]" id="lastname_signup" required="true" placeholder="Last Name">
-        <br>
-        <input type="text" name="user[username]" id="username_signup" required="true" placeholder="Username">
-        <br>
-        <input type="password" name="user[password]" id="password_signup" required="true" placeholder="Password">
-        <br>
-        <input type="email" name="user[email]" id="email_signup" placeholder="Email" required="true">
-        <br>
-        <input type="number" name="user[mobile_number]" id="mobile_number_signup" placeholder="Mobile Number"
-            required="true">
-        <br>
-        <button type="submit" id="signup_button">SIGNUP</button>
-    </form>
+    <div style="background-color: red;">
+        <form action="/signup" id="form_signup" method="POST">
+            <input type="text" name="user[first_name]" id="firstname_signup" required="true" placeholder="First Name"
+                style="background-color: black; margin-top: 20px;">
+            <br>
+            <input type="text" name="user[last_name]" id="lastname_signup" required="true" placeholder="Last Name"
+                style="background-color: black;">
+            <br>
+            <input type="text" name="user[username]" id="username_signup" required="true" placeholder="Username"
+                style="background-color: black;">
+            <br>
+            <input type="password" name="user[password]" id="password_signup" required="true" placeholder="Password"
+                style="background-color: black;">
+            <br>
+            <input type="email" name="user[email]" id="email_signup" placeholder="Email" required="true"
+                style="background-color: black;">
+            <br>
+            <input type="number" name="user[mobile_number]" id="mobile_number_signup" placeholder="Mobile Number"
+                style="background-color: black;" required="true">
+            <br>
+            <button type="submit" id="signup_button" style="background-color: black; color: red;">SIGNUP</button>
+        </form>
+    </div>
+    <br>
+    <br>
+
     <a href="/login">Already Have an Account?</a>
 </body>
 
