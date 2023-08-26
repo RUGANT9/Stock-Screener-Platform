@@ -27,12 +27,23 @@
                         <a class="nav-link" href="watchlist">WatchList</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="profile">Profile</a>
+                        <a class="nav-link" href="notelist">NoteList</a>
                     </li>
                 </ul>
             </div>
-            <div>
-                <a class="nav-link" href="logout" style="color: black;">Logout</a>
+            <div class="profile">
+                <div class="profile-icon" style="margin-left: 50px;">
+                    <img src="/assets/images/profile-user.png" alt="Profile Icon">
+                    <a href="https://www.flaticon.com/free-icons/user" title="user icons">User icons created by Freepik
+                        -
+                        Flaticon</a>
+                </div>
+                <div class="dropdown" style="border-radius: 10px; width: 100px;">
+                    <ul>
+                        <li><a href="profile">Profile</a></li>
+                        <li><a href="logout">Logout</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
@@ -42,7 +53,7 @@
         <ul>
             <% stocks_list.forEach((item)=> { %>
                 <li
-                    style="background-color: red; color: black; padding: 5px; font-size: 25px; font-weight: 850; text-align: left;">
+                    style="background-color: red; color: black; padding: 5px; font-size: 20px; font-weight: 850; text-align: left;">
 
                     <div style="display: flex; justify-content: space-between;">
                         <div style="display: flex; align-items: center;">
@@ -52,11 +63,11 @@
                             <form action="/dashboard" method="GET">
                                 <input type="hidden" name="given" value="<%= item.stock_symbol %>">
                                 <button type="submit"
-                                    style="background-color: black; color: red; padding: 5px; margin: 5px; width: 200px;">Search</button>
+                                    style="background-color: black; color: red; padding: 5px; margin: 5px; width: 150px; font-size: 15px;">Search</button>
                             </form>
                             <form action="/watchlist/delete/<%= item._id %>?_method=DELETE" method="POST">
                                 <button
-                                    style="background-color: black; color: red; padding: 5px; margin: 5px; width: 200px;">DELETE</button>
+                                    style="background-color: black; color: red; padding: 5px; margin: 5px; width: 150px; font-size: 15px">Delete</button>
                             </form>
                         </div>
                     </div>

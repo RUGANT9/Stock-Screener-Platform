@@ -26,12 +26,22 @@
                     <a class="nav-link" href="watchlist">WatchList</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="profile">Profile</a>
+                    <a class="nav-link" href="notelist">NoteList</a>
                 </li>
             </ul>
         </div>
-        <div>
-            <a class="nav-link" href="logout" style="color: black;">Logout</a>
+        <div class="profile">
+            <div class="profile-icon" style="margin-left: 50px;">
+                <img src="/assets/images/profile-user.png" alt="Profile Icon">
+                <a href="https://www.flaticon.com/free-icons/user" title="user icons">User icons created by Freepik -
+                    Flaticon</a>
+            </div>
+            <div class="dropdown" style="border-radius: 10px; width: 100px;">
+                <ul>
+                    <li><a href="profile">Profile</a></li>
+                    <li><a href="logout">Logout</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
@@ -40,10 +50,10 @@
         <form action="/searchview" method="GET">
             <% if (given.length> 0) { %>
                 <input type="text" placeholder="Enter Stock Ticker Symbol" name="symbol" value="<%= given %>"
-                    style="width: 400px; color: red; background-color: black;">
+                    style="width: 300px; color: red; background-color: black;">
                 <% } else { %>
-                    <input type="text" placeholder="Enter Stock Ticker Symbol" name="symbol"
-                        style="width: 400px; padding: 5px; font-weight: bold; background-color: black; color: red;">
+                    <input type="text" placeholder="Symbol, eg. AAPL" name="symbol"
+                        style="width: 300px; padding: 5px; font-weight: bold; background-color: black; color: red;">
                     <% } %>
                         <select name="select_time" id="select_time">
                             <option value="" disabled selected>Choose Timeframe</option>
@@ -53,7 +63,7 @@
                             <option value="Monthly">Monthly</option>
                         </select>
                         <p><button type="submit"
-                                style="padding: 3px; font-size: 20px; font-weight: bold; background-color: black; color: red;">SEARCH</button>
+                                style="padding: 3px; font-size: 20px; font-weight: bold; background-color: black; color: red; width: 200px;">Search</button>
                         </p>
 
         </form>

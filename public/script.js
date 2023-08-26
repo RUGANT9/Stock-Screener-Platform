@@ -1,7 +1,9 @@
 // Create the chart using Chart.js
-const symboliz = document.getElementById('symbolize').getAttribute('symbol')
-const timez = document.getElementById('timize').getAttribute('frame')
-const angle = document.getElementById('angler').getAttribute('angling')
+
+var symboliz = document.getElementById('symbolize').getAttribute('symbol');
+var timez = document.getElementById('timize').getAttribute('frame');
+var angle = document.getElementById('angler').getAttribute('angling');
+
 
 Promise.all([
     fetch('/chart-data?symbol=' + symboliz + '&timing=' + timez)
@@ -12,15 +14,21 @@ Promise.all([
             const chartData = {
                 labels: data.datesss,
                 datasets: [{
-                    label: 'Price Graph',
+                    label: 'Price',
                     data: data.valuesss,
                     backgroundColor: 'rgba(255,0,0, 0.2)',
                     borderColor: 'rgba(0, 0, 0, 1)',
                     borderWidth: 5
+                }, {
+                    type: 'bar',
+                    label: 'Volume',
+                    data: data.volumesss,
+                    backgroundColor: 'rgba(0,0,0, 0.2)',
+                    borderColor: 'rgba(0, 0, 0, 1)',
                 }]
             };
 
-            new Chart(ctx, {
+            var xx = new Chart(ctx, {
                 type: 'line', // Change the type based on your chart preference (line, bar, etc.)
                 data: chartData,
                 options: {
@@ -33,7 +41,20 @@ Promise.all([
                             beginAtZero: false, // Start the y-axis at zero
                         },
                     },
-                },
+                    plugins: {
+                        zoom: {
+                            zoom: {
+                                wheel: {
+                                    enabled: true,
+                                },
+                                pinch: {
+                                    enabled: true
+                                },
+                                mode: 'xy',
+                            }
+                        }
+                    }
+                }
             });
         })
 

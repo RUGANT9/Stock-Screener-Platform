@@ -10,12 +10,13 @@ body {
 
 input,
 button {
-    padding: 7px;
+    padding: 5px;
     margin-bottom: 20px;
     font-size: 20px;
     font-weight: 500;
     background-color: rgb(243, 10, 10);
     color: black;
+    border-radius: 10px;
     transition: box-shadow 0.3s ease;
     width: 350px;
 
@@ -26,6 +27,7 @@ select {
     font-size: 22px;
     font-weight: bold;
     background-color: black;
+    border-radius: 10px;
     color: red;
     width: 300px;
 }
@@ -33,7 +35,7 @@ select {
 h1,
 h2 {
     color: rgb(243, 10, 10);
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 500;
     background-color: black;
 }
@@ -111,4 +113,57 @@ td {
 .value {
     width: 20px;
     text-align: center;
+}
+
+
+.profile {
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.profile-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    background-color: red;
+    border: 1px solid black;
+    color: black;
+}
+
+.profile:hover .dropdown {
+    display: block;
+}
+
+.dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown li {
+    padding: 5px 10px;
+}
+
+.dropdown li a {
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+
+.dropdown li a:hover {
+    background-color: #f5f5f5;
 }

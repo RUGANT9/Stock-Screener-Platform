@@ -25,13 +25,23 @@
                 <li class="nav-item">
                     <a class="nav-link" href="watchlist">WatchList</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="profile">Profile</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="notelist">NoteList</a>
                 </li>
             </ul>
         </div>
-        <div>
-            <a class="nav-link" href="logout" style="color: black;">Logout</a>
+        <div class="profile">
+            <div class="profile-icon" style="margin-left: 50px;">
+                <img src="/assets/images/profile-user.png" alt="Profile Icon">
+                <a href="https://www.flaticon.com/free-icons/user" title="user icons">User icons created by Freepik -
+                    Flaticon</a>
+            </div>
+            <div class="dropdown" style="border-radius: 10px; width: 100px;">
+                <ul>
+                    <li><a href="profile">Profile</a></li>
+                    <li><a href="logout">Logout</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
     <p style="background-color: black; color: red; height: 50px; font-weight: bolder; font-size: 20px;">User Details</p>
@@ -39,27 +49,32 @@
         <ul>
             <% profiles.forEach((item)=> { %>
                 <li
-                    style="background-color: red; color: black; padding: 10px; font-size: 20px; font-weight: 1000; text-align: left;">
+                    style="background-color: red; color: black; padding: 10px; font-size: 15px; font-weight: 1000; text-align: left;">
                     First Name: <%= item.first_name %>
                 </li>
                 <li
-                    style="background-color: red; color: black; padding: 10px; font-size: 20px; font-weight: 1000; text-align: left;">
+                    style="background-color: red; color: black; padding: 10px; font-size: 15px; font-weight: 1000; text-align: left;">
                     Last Name: <%= item.last_name %>
                 </li>
                 <li
-                    style="background-color: red; color: black; padding: 10px; font-size: 20px; font-weight: 1000; text-align: left;">
+                    style="background-color: red; color: black; padding: 10px; font-size: 15px; font-weight: 1000; text-align: left;">
                     Email: <%= item.email %>
                 </li>
                 <li
-                    style="background-color: red; color: black; padding: 10px; font-size: 20px; font-weight: 1000; text-align: left;">
+                    style="background-color: red; color: black; padding: 10px; font-size: 15px; font-weight: 1000; text-align: left;">
                     Username: <%= item.username %>
                 </li>
                 <li
-                    style="background-color: red; color: black; padding: 10px; font-size: 20px; font-weight: 1000; text-align: left;">
+                    style="background-color: red; color: black; padding: 10px; font-size: 15px; font-weight: 1000; text-align: left;">
                     Mobile Number: <%= item.mobile_number %>
                 </li>
                 <% }); %>
         </ul>
+
+        <form action="/delete_account/<%= item._id %>">
+            <button style="width: 200px; color: red; background-color:black; font-weight:
+            700;">Delete Account</button>
+        </form>
         <% } else { %>
             <p>No data found.</p>
             <% } %>

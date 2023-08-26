@@ -7,6 +7,7 @@ const path = require("path");
 const fs = require('fs');
 const User = require('../backend/db/user.js');
 const Watchlist = require('../backend/db/watchlist.js');
+const Notelist = require('../backend/db/notelist.js');
 const router = express.Router();
 
 
@@ -22,7 +23,8 @@ router.get('/login', (req, res) => {
 router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
     const redirectUrl = '/dashboard';
     res.redirect(redirectUrl);
-})
+});
+
 
 // GET request for Logout
 router.get('/logout', (req, res) => {
@@ -34,6 +36,7 @@ router.get('/logout', (req, res) => {
         res.redirect('/login');
     });
 });
+
 
 // GET request for Dashboard Page
 router.get('/dashboard', isLoggedIn, async (req, res) => {
@@ -209,14 +212,16 @@ router.get('/chart-data', async (req, res) => {
                 const tSeries = data['Time Series (5min)'];
                 var dates = [];
                 var values = [];
+                var volume = [];
                 var i = 0;
                 for (var tempData in tSeries) {
                     dates.push(i);
                     values.push(tSeries[tempData]['4. close']);
+                    volume.push((tSeries[tempData]['5. volume']) / 100000);
                     i = i + 1;
                     //tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
                 }
-                const responseData = { datesss: dates, valuesss: values }
+                const responseData = { datesss: dates, valuesss: values, volumesss: volume }
                 res.json(responseData);
 
             })
@@ -232,14 +237,16 @@ router.get('/chart-data', async (req, res) => {
                 const tSeries = data['Time Series (Daily)'];
                 var dates = [];
                 var values = [];
+                var volume = [];
                 var i = 0;
                 for (var tempData in tSeries) {
                     dates.push(i);
                     values.push(tSeries[tempData]['4. close']);
+                    volume.push((tSeries[tempData]['5. volume']) / 1000000);
                     i = i + 1;
                     //tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
                 }
-                const responseData = { datesss: dates, valuesss: values }
+                const responseData = { datesss: dates, valuesss: values, volumesss: volume }
                 res.json(responseData);
 
             })
@@ -255,14 +262,16 @@ router.get('/chart-data', async (req, res) => {
                 const tSeries = data['Weekly Time Series'];
                 var dates = [];
                 var values = [];
+                var volume = [];
                 var i = 0;
                 for (var tempData in tSeries) {
                     dates.push(i);
                     values.push(tSeries[tempData]['4. close']);
+                    volume.push((tSeries[tempData]['5. volume']) / 10000000);
                     i = i + 1;
                     //tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
                 }
-                const responseData = { datesss: dates, valuesss: values }
+                const responseData = { datesss: dates, valuesss: values, volumesss: volume }
                 res.json(responseData);
 
             })
@@ -278,14 +287,16 @@ router.get('/chart-data', async (req, res) => {
                 const tSeries = data['Monthly Time Series'];
                 var dates = [];
                 var values = [];
+                var volume = [];
                 var i = 0;
                 for (var tempData in tSeries) {
                     dates.push(i);
                     values.push(tSeries[tempData]['4. close']);
+                    volume.push((tSeries[tempData]['5. volume']) / 10000000);
                     i = i + 1;
                     //tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
                 }
-                const responseData = { datesss: dates, valuesss: values }
+                const responseData = { datesss: dates, valuesss: values, volumesss: volume }
                 res.json(responseData);
 
             })
@@ -343,5 +354,95 @@ router.get('/download', async (req, res) => {
 
 });
 
+
+//NOTEPAD APIS
+router.get('/notelist', isLoggedIn, async (req, res) => {
+    try {
+        const notes_list = await Notelist.find({ user_id: req.user._id });
+        if (!notes_list) {
+            console.error(err);
+            res.send('Error fetching data');
+        } else {
+            // Render the EJS template with the fetched data
+            res.render('notelist', { notes_list });
+        }
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+
+router.get('/new_note', isLoggedIn, async (req, res) => {
+    res.render('new_note');
+})
+
+
+router.post('/notelist/add', isLoggedIn, async (req, res) => {
+    const newNote = new Notelist({
+        stock_symbol: req.body.stock_symbol,
+        user_id: req.user._id,
+        notepad: req.body.notepad
+    });
+    try {
+        const result = await newNote.save({});
+        if (!result) {
+            console.error(err);
+            res.send('Error saving data');
+        } else {
+            console.log('Data saved successfully');
+            res.redirect('/notelist');
+        }
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+
+router.delete('/notelist/delete/:id', isLoggedIn, async (req, res) => {
+    const { id } = req.params;
+    await Notelist.findByIdAndDelete(id);
+    res.redirect('/notelist')
+})
+
+
+router.get('/notelist/update/:id', isLoggedIn, async (req, res) => {
+    const { id } = req.params;
+    const item = await Notelist.findById(id);
+    res.render('update_note', { item });
+})
+
+
+router.put('/notelist/update/:id', isLoggedIn, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const newnotepad = req.body.notepad;
+        const newstocksymbol = req.body.stock_symbol;
+        const updatedDocument = await Notelist.findByIdAndUpdate(
+            id,
+            { notepad: newnotepad, stock_symbol: newstocksymbol },
+            { new: true }
+        );
+        if (!updatedDocument) {
+            return res.status(404).json({ message: 'Document not found' });
+        }
+        res.redirect('/notelist')
+    } catch (error) {
+        console.error('Error:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+
+router.delete('/delete/:id', isLoggedIn, async (req, res) => {
+    const { id } = req.params;
+    await User.findByIdAndDelete(id);
+    res.redirect('/login')
+})
+
+
+
+router.get('/', async (req, res) => {
+    res.render('login');
+})
 
 module.exports = router;

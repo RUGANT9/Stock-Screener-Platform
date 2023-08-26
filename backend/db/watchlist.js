@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-const User = require('./user.js')
+const User = require('./user.js');
+
+// Table for the Watchlist Schema
 
 const watchlistSchema = new mongoose.Schema({
     stock_symbol: {
