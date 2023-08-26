@@ -158,48 +158,50 @@ router.get('/searchview', isLoggedIn, async (req, res) => {
     const timing = req.query.select_time;
     const tempDataStore = [];
     req.session.timing = timing;
-    const news_feed = await axios('https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=' + symb + '&apikey=JP083ZCQZTWKDTSF')
-    const items = parseInt(news_feed.data.items);
-    const feed = news_feed.data.feed;
-    var sentiment = 0;
-    for (var i = 0; i < items; i++) {
-        sentiment = sentiment + feed[i].overall_sentiment_score;
-    }
-    var sent_avg = sentiment * 1.0 / items;
-    var sent_exp = "";
-    var angle = 0;
-    if (sent_avg <= -0.35) {
-        sent_exp = "Bearish";
-        angle = -40;
-    }
-    else if (sent_avg > -0.35 && sent_avg <= -0.15) {
-        sent_exp = "Somewhat Bearish";
-        angle = -20;
-    }
-    else if (sent_avg > -0.15 && sent_avg < 0.15) {
-        sent_exp = "Neutral";
-        angle = 0;
-    }
-    else if (sent_avg >= 0.15 && sent_avg < 0.35) {
-        sent_exp = "Somewhat Bullish";
-        angle = 20;
-    }
-    else if (sent_avg >= 0.35) {
-        sent_exp = "Bullish";
-        angle = 40;
-    }
 
+    // Get the company overview
     axios('https://www.alphavantage.co/query?function=OVERVIEW&symbol=' + symb + '&apikey=JP083ZCQZTWKDTSF')
         .then(async (response) => {
             const symbol = req.query.symbol.toUpperCase();
             const data = response.data;
             tempDataStore.push({ "Name": data.Name, "BookValue": data.BookValue, "Sector": data.Sector, "MarketCapitalization": data.MarketCapitalization, "EPS": data.EPS, "DividendPerShare": data.DividendPerShare, "Description": data.Description, "PEGRatio": data.PEGRatio, "ReturnOnEquityTTM": data.ReturnOnEquityTTM, "GrossProfitTTM": data.GrossProfitTTM, "WeekHigh": data['52WeekHigh'], "WeekLow": data['52WeekLow'], "DayMovingAverage": data['50DayMovingAverage'] });
-            res.render('searchview', { tempDataStore, symbol, timing, show_add_delete, sent_exp, angle });
+            res.render('searchview', { tempDataStore, symbol, timing, show_add_delete });
         })
         .catch((error) => {
             console.log(error);
         })
 });
+
+
+// Sentiment
+router.get('/sentiment-data', async (req, res) => {
+    // Get the sentiment
+    symb = req.query.symbol;
+    const news_feed = await axios('https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=' + symb + '&apikey=JP083ZCQZTWKDTSF')
+    const items = parseInt(news_feed.data.items);
+    const feed = news_feed.data.feed;
+    senti_arr = [0, 0, 0, 0, 0];
+    senti = ['Strong Sell', 'Sell', 'Neutral', 'Buy', 'Strong Buy']
+    for (var i = 0; i < items; i++) {
+        if (feed[i].overall_sentiment_label === 'Bearish') {
+            senti_arr[0] += 1;
+        }
+        else if (feed[i].overall_sentiment_label === 'Somewhat-Bearish') {
+            senti_arr[1] += 1;
+        }
+        else if (feed[i].overall_sentiment_label === 'Neutral') {
+            senti_arr[2] += 1;
+        }
+        else if (feed[i].overall_sentiment_label === 'Somewhat-Bullish') {
+            senti_arr[3] += 1;
+        }
+        else {
+            senti_arr[4] += 1;
+        }
+    }
+    const responseData = { sentisss: senti, senti_arrsss: senti_arr }
+    res.json(responseData);
+})
 
 
 // Charting
