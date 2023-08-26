@@ -72,253 +72,240 @@
         <br>
         <br>
         <% if (tempDataStore.length> 0) { %>
+            <ul style="background-color: red;">
+                <li
+                    style="background-color: red; color: black; padding: 5px; font-size: 20px; font-weight: 850; text-align: left;">
 
-            <div class="container-fluid">
-                <div class="row" style="background-color: red; color: black;">
-                    <div class="col-md-4">
-                        <h3>Company</h3>
-                        <div class="content">
-                            <div>
-                                <p style="font-size: 20px; font-weight: 600px;">
-                                    <%= symbol %>
-                                </p>
-                            </div>
-                            <div style="display: flex;">
-                                <% if (show_add_delete.length===0) { %>
-                                    <form action="/watchlist/add" method="POST">
-                                        <input type="hidden" name="stock_symbol" value="<%= symbol %>">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div style="display: flex; align-items: center;">
+                            <%= symbol %>
+                        </div>
+                        <div style="display: flex;">
+                            <% if (show_add_delete.length===0) { %>
+                                <form action="/watchlist/add" method="POST">
+                                    <input type="hidden" name="stock_symbol" value="<%= symbol %>">
+                                    <button type="submit"
+                                        style="background-color: black; color: red; padding: 3px; font-size: 15px; margin: 5px; width: 120px;">Add
+                                        to
+                                        Watchlist</button>
+                                </form>
+                                <% } else { %>
+                                    <form action="/watchlist/delete/<%= show_add_delete %>?_method=DELETE"
+                                        method="POST">
+
                                         <button type="submit"
-                                            style="background-color: black; color: red; padding: 3px; font-size: 15px; margin: 5px; width: 120px;">Add
-                                            to
+                                            style="background-color: black; color: red; padding: 3px; font-size: 15px; margin: 5px; width: 150px;">Delete
+                                            from
                                             Watchlist</button>
                                     </form>
-                                    <% } else { %>
-                                        <form action="/watchlist/delete/<%= show_add_delete %>?_method=DELETE"
-                                            method="POST">
-
-                                            <button type="submit"
-                                                style="background-color: black; color: red; padding: 3px; font-size: 15px; margin: 5px; width: 120px;">Delete
-                                                from
-                                                Watchlist</button>
+                                    <% } %>
+                                        <form action="/download" method="GET">
+                                            <input type="hidden" name="timing" value="<%= timing %>">
+                                            <input type="hidden" name="stock_symbol" value="<%= symbol %>">
+                                            <button
+                                                style="background-color: black; color: red; padding: 3px; font-size: 15px; margin: 5px; width: 150px;">Download
+                                                Data</button>
                                         </form>
-                                        <br>
-                                        <% } %>
-                                            <br>
-                                            <form action="/download" method="GET">
-                                                <input type="hidden" name="timing" value="<%= timing %>">
-                                                <input type="hidden" name="stock_symbol" value="<%= symbol %>">
-                                                <button
-                                                    style="background-color: black; color: red; padding: 3px; font-size: 15px; margin: 5px; width: 100px;">Download
-                                                    Data</button>
-                                            </form>
-                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="container mt-3" style="background-color: red; max-width: 100%;">
-                            <p style="color: black; font-weight: bold; font-size: 18px;">DESCRIPTION</p>
-                            <div class="row">
-                                <div class="col">
-                                    <div style="max-height: 300px; overflow: auto;">
-                                        <p class="card-text text-wrap"
-                                            style="font-size: 20px; font-weight: bold; color: black; padding: 40px;">
-                                            <%= tempDataStore[0].Description %>
-                                        </p>
-                                    </div>
-                                </div>
+                </li>
+            </ul>
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="container mt-3" style="background-color: red; max-width: 80%;">
+                            <p style="color: black; font-size: 20px;">Description</p>
+                            <div style="max-height: 300px; overflow: auto;">
+                                <p class="card-text text-wrap" style="font-size: 16px; color: black; padding: 20px;">
+                                    <%= tempDataStore[0].Description %>
+                                </p>
                             </div>
                         </div>
                     </div>
 
-
-
-                    <div class="col-md-4">
-                        <div class="speedometer">
-                            <p style="color: black; font-weight: bold; font-size: 18px;">MARKET SENTIMENT</p>
-                            <div class="stick-figure"></div>
-                            <div class="values">
-                                <div class="value" style="color: black; font-weight: bold;">Bearish</div>
-                                <div class="value" style="color: black; font-weight: bold;">Mild Bearish</div>
-                                <div class="value" style="color: black; font-weight: bold;">Neutral</div>
-                                <div class="value" style="color: black; font-weight: bold;">Mild Bullish</div>
-                                <div class="value" style="color: black; font-weight: bold;">Bullish</div>
-                            </div>
+                    <div class="col-md-6" style="max-width: 80%;">
+                        <div style="width: 80%; background-color: red; color: black;">
+                            <p style="color: black; font-size: 20px;">Market Sentiment</p>
+                            <canvas id="barChart" height="100" width="200" style="padding: 10px;"></canvas>
                         </div>
                     </div>
                 </div>
-                <br>
-                <br>
-                <var symbol="<%= symbol %>" id="symbolize"></var>
-                <var frame="<%= timing %>" id="timize"></var>
-                <var angling="<%= angle %>" id="angler"></var>
+            </div>
+            <br>
+            <br>
+            <var symbol="<%= symbol %>" id="symbolize"></var>
+            <var frame="<%= timing %>" id="timize"></var>
 
-                <div style="background-color: red;">
-                    <button onclick="getData('Intraday')"
-                        style="background-color: black; color: red; width: fit-content;">Intraday</button>
-                    <button onclick="getData('Daily')"
-                        style="background-color: black; color: red; width: fit-content;">Daily</button>
-                    <button onclick="getData('Weekly')"
-                        style="background-color: black; color: red; width: fit-content;">Weekly</button>
-                    <button onclick="getData('Monthly')"
-                        style="background-color: black; color: red; width: fit-content;">Monthly</button>
-                </div>
-                <canvas id="myChart" width="400" height="200" style="background-color: red; color: black;"></canvas>
-                <script>
 
-                    var symboliz = document.getElementById('symbolize').getAttribute('symbol');
-                    var timez = document.getElementById('timize').getAttribute('frame');
-                    var angle = document.getElementById('angler').getAttribute('angling');
-                    function getData(option = 'Intraday') {
-                        Promise.all([
-                            fetch('/chart-data?symbol=' + symboliz + '&timing=' + `${option}`)
-                                .then(response => response.json())
-                                .then(data => {
-                                    const ctx = document.getElementById('myChart').getContext('2d');
-                                    const canvas = document.getElementById('myChart');
-                                    // Check if a chart instance already exists
-                                    if (canvas) {
-                                        const context = canvas.getContext('2d');
-                                        const xxy = Chart.getChart("myChart");
-                                        xxy.destroy();
-                                    }
-                                    const chartData = {
-                                        labels: data.datesss,
-                                        datasets: [{
-                                            label: 'Price Graph',
-                                            data: data.valuesss,
-                                            backgroundColor: 'rgba(255,0,0, 0.2)',
-                                            borderColor: 'rgba(0, 0, 0, 1)',
-                                            borderWidth: 5
-                                        }, {
-                                            type: 'bar',
-                                            label: 'Volume',
-                                            data: data.volumesss,
-                                            backgroundColor: 'rgba(0,0,0, 0.2)',
-                                            borderColor: 'rgba(0, 0, 0, 1)',
-                                        }]
-                                    };
+            <div style="background-color: red; margin-left: 30px; margin-right: 30px;">
+                <button onclick="getData('Intraday')"
+                    style="background-color: black; color: red; width: fit-content;">Intraday</button>
+                <button onclick="getData('Daily')"
+                    style="background-color: black; color: red; width: fit-content;">Daily</button>
+                <button onclick="getData('Weekly')"
+                    style="background-color: black; color: red; width: fit-content;">Weekly</button>
+                <button onclick="getData('Monthly')"
+                    style="background-color: black; color: red; width: fit-content;">Monthly</button>
+            </div>
+            <canvas id="myChart" width="400" height="200"
+                style="background-color: red; color: black; margin-left: 30px; margin-right: 30px;"></canvas>
+            <script>
 
-                                    var stch = new Chart(ctx, {
-                                        type: 'line', // Change the type based on your chart preference (line, bar, etc.)
-                                        data: chartData,
-                                        options: {
-                                            scales: {
-                                                x: {
-                                                    type: 'linear', // Specify the x-axis type as 'linear' for numerical values
-                                                    position: 'bottom', // Position the x-axis at the bottom
-                                                },
-                                                y: {
-                                                    beginAtZero: false, // Start the y-axis at zero
-                                                },
+                var symboliz = document.getElementById('symbolize').getAttribute('symbol');
+                var timez = document.getElementById('timize').getAttribute('frame');
+                var angle = document.getElementById('angler').getAttribute('angling');
+                function getData(option = 'Intraday') {
+                    Promise.all([
+                        fetch('/chart-data?symbol=' + symboliz + '&timing=' + `${option}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                const ctx = document.getElementById('myChart').getContext('2d');
+                                const canvas = document.getElementById('myChart');
+                                // Check if a chart instance already exists
+                                if (canvas) {
+                                    const context = canvas.getContext('2d');
+                                    const xxy = Chart.getChart("myChart");
+                                    xxy.destroy();
+                                }
+                                const chartData = {
+                                    labels: data.datesss,
+                                    datasets: [{
+                                        label: 'Price Graph',
+                                        data: data.valuesss,
+                                        backgroundColor: 'rgba(255,0,0, 0.2)',
+                                        borderColor: 'rgba(0, 0, 0, 1)',
+                                        borderWidth: 5
+                                    }, {
+                                        type: 'bar',
+                                        label: 'Volume',
+                                        data: data.volumesss,
+                                        backgroundColor: 'rgba(0,0,0, 0.2)',
+                                        borderColor: 'rgba(0, 0, 0, 1)',
+                                    }]
+                                };
+
+                                var stch = new Chart(ctx, {
+                                    type: 'line', // Change the type based on your chart preference (line, bar, etc.)
+                                    data: chartData,
+                                    options: {
+                                        scales: {
+                                            x: {
+                                                type: 'linear', // Specify the x-axis type as 'linear' for numerical values
+                                                position: 'bottom', // Position the x-axis at the bottom
                                             },
-                                            plugins: {
+                                            y: {
+                                                beginAtZero: false, // Start the y-axis at zero
+                                            },
+                                        },
+                                        plugins: {
+                                            zoom: {
                                                 zoom: {
-                                                    zoom: {
-                                                        wheel: {
-                                                            enabled: true,
-                                                        },
-                                                        pinch: {
-                                                            enabled: true
-                                                        },
-                                                        mode: 'xy',
-                                                    }
+                                                    wheel: {
+                                                        enabled: true,
+                                                    },
+                                                    pinch: {
+                                                        enabled: true
+                                                    },
+                                                    mode: 'xy',
                                                 }
                                             }
                                         }
-                                    });
-                                })
-                        ])
-                    }
-                </script>
+                                    }
+                                });
+                            })
+                    ])
+                }
+            </script>
 
-                <br>
-                <p style="color: red; background-color: black; font-weight: bold; font-size: 20px;padding: 10px;">
-                    DETAILS
-                </p>
-                <table class="table table-bordered" style="background-color: red; color: black;">
-                    <thead>
+            <br>
+            <p style="color: red; background-color: black; font-weight: bold; font-size: 20px;padding: 10px;">
+                DETAILS
+            </p>
+            <table class="table table-bordered" style="background-color: red; color: black;">
+                <thead>
+                    <tr>
+                        <th scope=" col">Name</th>
+                        <th scope="col">Book Value</th>
+                        <th scope="col">Sector</th>
+                        <th scope="col">Market Capitalization</th>
+                        <th scope="col">EPS</th>
+                        <th scope="col">Dividend Per Share</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let i=0; i<1; i++) { %>
                         <tr>
-                            <th scope=" col">Name</th>
-                            <th scope="col">Book Value</th>
-                            <th scope="col">Sector</th>
-                            <th scope="col">Market Capitalization</th>
-                            <th scope="col">EPS</th>
-                            <th scope="col">Dividend Per Share</th>
+                            <td>
+                                <%= tempDataStore[i].Name %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].BookValue %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].Sector %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].MarketCapitalization %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].EPS %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].DividendPerShare %>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <% for (let i=0; i<1; i++) { %>
-                            <tr>
-                                <td>
-                                    <%= tempDataStore[i].Name %>
-                                </td>
-                                <td>
-                                    <%= tempDataStore[i].BookValue %>
-                                </td>
-                                <td>
-                                    <%= tempDataStore[i].Sector %>
-                                </td>
-                                <td>
-                                    <%= tempDataStore[i].MarketCapitalization %>
-                                </td>
-                                <td>
-                                    <%= tempDataStore[i].EPS %>
-                                </td>
-                                <td>
-                                    <%= tempDataStore[i].DividendPerShare %>
-                                </td>
-                            </tr>
-                            <% }; %>
-                    </tbody>
-                </table>
-                <table class="table table-bordered" style="background-color: red; color: black;">
-                    <thead>
+                        <% }; %>
+                </tbody>
+            </table>
+            <table class="table table-bordered" style="background-color: red; color: black;">
+                <thead>
+                    <tr>
+                        <th scope=" col">PEG ratio</th>
+                        <th scope="col">Return on Equity</th>
+                        <th scope="col">Gross Profit</th>
+                        <th scope="col">52 Week High</th>
+                        <th scope="col">52 Week Low</th>
+                        <th scope="col">50 Day Moving Average</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let i=0; i<1; i++) { %>
                         <tr>
-                            <th scope=" col">PEG ratio</th>
-                            <th scope="col">Return on Equity</th>
-                            <th scope="col">Gross Profit</th>
-                            <th scope="col">52 Week High</th>
-                            <th scope="col">52 Week Low</th>
-                            <th scope="col">50 Day Moving Average</th>
+                            <td>
+                                <%= tempDataStore[i].PEGRatio %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].ReturnOnEquityTTM %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].GrossProfitTTM %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].WeekHigh %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].WeekLow %>
+                            </td>
+                            <td>
+                                <%= tempDataStore[i].DayMovingAverage %>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <% for (let i=0; i<1; i++) { %>
-                            <tr>
-                                <td>
-                                    <%= tempDataStore[i].PEGRatio %>
-                                </td>
-                                <td>
-                                    <%= tempDataStore[i].ReturnOnEquityTTM %>
-                                </td>
-                                <td>
-                                    <%= tempDataStore[i].GrossProfitTTM %>
-                                </td>
-                                <td>
-                                    <%= tempDataStore[i].WeekHigh %>
-                                </td>
-                                <td>
-                                    <%= tempDataStore[i].WeekLow %>
-                                </td>
-                                <td>
-                                    <%= tempDataStore[i].DayMovingAverage %>
-                                </td>
-                            </tr>
-                            <% }; %>
-                    </tbody>
-                </table>
-                <% }else { %>
-                    <p>Search for a Stock</p>
-                    <% } %>
-            </div>
+                        <% }; %>
+                </tbody>
+            </table>
+            <% }else { %>
+                <p>Search for a Stock</p>
+                <% } %>
+    </div>
 
-            <a href="/watchlist" type="button" style="background-color: black; color: red; padding: 10px;">Back To
-                WatchList</a>
+    <a href="/watchlist" type="button" style="background-color: black; color: red; padding: 10px;">Back To
+        WatchList</a>
 
-            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <script type="application/javascript" src="/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="application/javascript" src="/script.js"></script>
 
 </body>
 

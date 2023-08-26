@@ -2,7 +2,49 @@
 
 var symboliz = document.getElementById('symbolize').getAttribute('symbol');
 var timez = document.getElementById('timize').getAttribute('frame');
-var angle = document.getElementById('angler').getAttribute('angling');
+
+
+Promise.all([
+    fetch('/sentiment-data?symbol=' + symboliz)
+        .then(response => response.json())
+        .then(data => {
+            var ctx = document.getElementById('barChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.sentisss,
+                    datasets: [{
+                        label: 'Sentiment Chart',
+                        data: data.senti_arrsss,
+                        backgroundColor: 'black',
+                        borderColor: 'rgba(255, 0, 0, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: 'black', // Set y-axis label color
+                                font: {
+                                    weight: 'bold' // Set y-axis label font weight
+                                }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'black', // Set x-axis label color
+                                font: {
+                                    weight: 'bold' // Set x-axis label font weight
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        })
+])
 
 
 Promise.all([
@@ -59,10 +101,3 @@ Promise.all([
         })
 
 ])
-
-const stickFigure = document.querySelector('.stick-figure');
-
-// Set the rotation angle (in degrees)
-const rotationAngle = angle;
-
-stickFigure.style.transform = `translateX(-50%) rotate(${rotationAngle}deg)`;

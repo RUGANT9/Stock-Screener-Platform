@@ -68,18 +68,19 @@
                     style="background-color: red; color: black; padding: 10px; font-size: 15px; font-weight: 1000; text-align: left;">
                     Mobile Number: <%= item.mobile_number %>
                 </li>
-                <% }); %>
+
         </ul>
 
         <form action="/delete_account/<%= item._id %>">
             <button style="width: 200px; color: red; background-color:black; font-weight:
             700;">Delete Account</button>
         </form>
-        <% } else { %>
-            <p>No data found.</p>
-            <% } %>
-                <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <% }); %>
+            <% } else { %>
+                <p>No data found.</p>
+                <% } %>
+                    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+                    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 
 </html>
