@@ -3,6 +3,7 @@ A web based application that enables users to gain insights about stocks. We hav
 
 We can further added interested stocks to the watchlist so that we can have an easier reference to them. We can later delete a stock from watchlist if no longer interested in it. It supports local user authentication as of now.
 
+We have added the Notelist Feature where users can add, edit or delete notes which they would like to keep notes regarding a particular stock, helping users to track info, patterns etc they would like to remember.
 
 
 Future Work:
