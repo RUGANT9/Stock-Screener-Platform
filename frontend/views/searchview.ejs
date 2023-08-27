@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: red;">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(173, 3, 3);">
         <a class="navbar-brand" href="#">RUGANT</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +42,7 @@
                 <a href="https://www.flaticon.com/free-icons/user" title="user icons">User icons created by Freepik -
                     Flaticon</a>
             </div>
-            <div class="dropdown">
+            <div class="dropdown" style="border-radius: 10px; width: 100px; background-color: rgb(196, 19, 19);">
                 <ul>
                     <li><a href="profile">Profile</a></li>
                     <li><a href="logout">Logout</a></li>
@@ -53,7 +53,7 @@
 
     <h2>Stock Data</h2>
     <div>
-        <div style="background-color: red; padding-top: 20px; margin-bottom: 10px;">
+        <div style="background-color: rgb(173, 3, 3); padding-top: 20px; margin-bottom: 5px;">
             <form action="/searchview" method="GET">
                 <input type="text" placeholder="Symbol, eg. AAPL" name="symbol"
                     style="background-color: black; color: red;">
@@ -72,9 +72,9 @@
         <br>
         <br>
         <% if (tempDataStore.length> 0) { %>
-            <ul style="background-color: red;">
+            <ul style="background-color: rgb(173, 3, 3);">
                 <li
-                    style="background-color: red; color: black; padding: 5px; font-size: 20px; font-weight: 850; text-align: left;">
+                    style="background-color: rgb(173, 3, 3); color: black; padding: 5px; font-size: 20px; font-weight: 850; text-align: left;">
 
                     <div style="display: flex; justify-content: space-between;">
                         <div style="display: flex; align-items: center;">
@@ -113,10 +113,10 @@
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="container mt-3" style="background-color: red; max-width: 80%;">
-                            <p style="color: black; font-size: 20px;">Description</p>
-                            <div style="max-height: 300px; overflow: auto;">
+                    <div class="col-md-6" style="max-width: 100%;">
+                        <div class="container mt-3" style="background-color: rgb(173, 3, 3); max-width: 80%;">
+                            <p style="color: black; font-size: 20px; font-weight: 600;">Description</p>
+                            <div style="max-height: 400px; overflow: auto;">
                                 <p class="card-text text-wrap" style="font-size: 16px; color: black; padding: 20px;">
                                     <%= tempDataStore[0].Description %>
                                 </p>
@@ -124,9 +124,9 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6" style="max-width: 80%;">
-                        <div style="width: 80%; background-color: red; color: black;">
-                            <p style="color: black; font-size: 20px;">Market Sentiment</p>
+                    <div class="col-md-6" style="max-width: 100%;">
+                        <div style="width: 80%; background-color: rgb(173, 3, 3); color: black;">
+                            <p style="color: black; font-size: 20px; font-weight: 600;">Market Sentiment</p>
                             <canvas id="barChart" height="100" width="200" style="padding: 10px;"></canvas>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
             <var frame="<%= timing %>" id="timize"></var>
 
 
-            <div style="background-color: red; margin-left: 30px; margin-right: 30px;">
+            <div style="background-color: rgb(173, 3, 3); margin-left: 50px; margin-right: 50px;">
                 <button onclick="getData('Intraday')"
                     style="background-color: black; color: red; width: fit-content;">Intraday</button>
                 <button onclick="getData('Daily')"
@@ -149,7 +149,7 @@
                     style="background-color: black; color: red; width: fit-content;">Monthly</button>
             </div>
             <canvas id="myChart" width="400" height="200"
-                style="background-color: red; color: black; margin-left: 30px; margin-right: 30px;"></canvas>
+                style="background-color: rgb(173, 3, 3); color: black; margin-left: 50px; margin-right: 50px;"></canvas>
             <script>
 
                 var symboliz = document.getElementById('symbolize').getAttribute('symbol');
@@ -222,84 +222,135 @@
             <p style="color: red; background-color: black; font-weight: bold; font-size: 20px;padding: 10px;">
                 DETAILS
             </p>
-            <table class="table table-bordered" style="background-color: red; color: black;">
-                <thead>
-                    <tr>
-                        <th scope=" col">Name</th>
-                        <th scope="col">Book Value</th>
-                        <th scope="col">Sector</th>
-                        <th scope="col">Market Capitalization</th>
-                        <th scope="col">EPS</th>
-                        <th scope="col">Dividend Per Share</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for (let i=0; i<1; i++) { %>
-                        <tr>
-                            <td>
-                                <%= tempDataStore[i].Name %>
-                            </td>
-                            <td>
-                                <%= tempDataStore[i].BookValue %>
-                            </td>
-                            <td>
-                                <%= tempDataStore[i].Sector %>
-                            </td>
-                            <td>
-                                <%= tempDataStore[i].MarketCapitalization %>
-                            </td>
-                            <td>
-                                <%= tempDataStore[i].EPS %>
-                            </td>
-                            <td>
-                                <%= tempDataStore[i].DividendPerShare %>
-                            </td>
-                        </tr>
-                        <% }; %>
-                </tbody>
-            </table>
-            <table class="table table-bordered" style="background-color: red; color: black;">
-                <thead>
-                    <tr>
-                        <th scope=" col">PEG ratio</th>
-                        <th scope="col">Return on Equity</th>
-                        <th scope="col">Gross Profit</th>
-                        <th scope="col">52 Week High</th>
-                        <th scope="col">52 Week Low</th>
-                        <th scope="col">50 Day Moving Average</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for (let i=0; i<1; i++) { %>
-                        <tr>
-                            <td>
-                                <%= tempDataStore[i].PEGRatio %>
-                            </td>
-                            <td>
-                                <%= tempDataStore[i].ReturnOnEquityTTM %>
-                            </td>
-                            <td>
-                                <%= tempDataStore[i].GrossProfitTTM %>
-                            </td>
-                            <td>
-                                <%= tempDataStore[i].WeekHigh %>
-                            </td>
-                            <td>
-                                <%= tempDataStore[i].WeekLow %>
-                            </td>
-                            <td>
-                                <%= tempDataStore[i].DayMovingAverage %>
-                            </td>
-                        </tr>
-                        <% }; %>
-                </tbody>
-            </table>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6" style="max-width: 90%; background-color: rgb(173, 3, 3); color: black;">
+                        <table class="table" style="background-color: rgb(173, 3, 3); color: black;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Paramter</th>
+                                    <th scope="col">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (let i=0; i<1; i++) { %>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Name</td>
+                                        <td>
+                                            <%= tempDataStore[i].Name %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Book Value</td>
+                                        <td>
+                                            <%= tempDataStore[i].BookValue %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Sector</td>
+                                        <td>
+                                            <%= tempDataStore[i].Sector %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">4</th>
+                                        <td>Market Capitalization</td>
+                                        <td>
+                                            <%= tempDataStore[i].MarketCapitalization %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">5</th>
+                                        <td>EPS</td>
+                                        <td>
+                                            <%= tempDataStore[i].EPS %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">6</th>
+                                        <td>Dividend Per Share</td>
+                                        <td>
+                                            <%= tempDataStore[i].DividendPerShare %>
+                                        </td>
+                                    </tr>
+                                    <% }; %>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="col-md-6" style="max-width: 90%; background-color: rgb(173, 3, 3); color: black;">
+
+                        <table class="table" style="background-color: rgb(173, 3, 3); color: black;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Paramter</th>
+                                    <th scope="col">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (let i=0; i<1; i++) { %>
+                                    <tr>
+                                        <th scope="row">7</th>
+                                        <td>PEGRatio</td>
+                                        <td>
+                                            <%= tempDataStore[i].PEGRatio %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">8</th>
+                                        <td>Return on Equity</td>
+                                        <td>
+                                            <%= tempDataStore[i].ReturnOnEquityTTM %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">9</th>
+                                        <td>Gross Profit</td>
+                                        <td>
+                                            <%= tempDataStore[i].GrossProfitTTM %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">10</th>
+                                        <td>52 Week High</td>
+                                        <td>
+                                            <%= tempDataStore[i].WeekHigh %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">11</th>
+                                        <td>52 Week Low</td>
+                                        <td>
+                                            <%= tempDataStore[i].WeekLow %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">12</th>
+                                        <td>50 Day Moving Average</td>
+                                        <td>
+                                            <%= tempDataStore[i].DayMovingAverage %>
+                                        </td>
+                                    </tr>
+                                    <% }; %>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
             <% }else { %>
                 <p>Search for a Stock</p>
                 <% } %>
     </div>
 
-    <a href="/watchlist" type="button" style="background-color: black; color: red; padding: 10px;">Back To
+    <a href="/watchlist" type="button" style="background-color: black; color: red; padding: 10px;">Back
+        To
         WatchList</a>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: red;">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(196, 19, 19);">
         <a class="navbar-brand" href="#">RUGANT</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,7 @@
                         -
                         Flaticon</a>
                 </div>
-                <div class="dropdown" style="border-radius: 10px; width: 100px;">
+                <div class="dropdown" style="border-radius: 10px; width: 100px; background-color: rgb(196, 19, 19);">
                     <ul>
                         <li><a href="profile">Profile</a></li>
                         <li><a href="logout">Logout</a></li>
@@ -49,7 +49,8 @@
         </div>
     </nav>
     <h2>NoteList</h2>
-    <form action="/notelist/update/<%= item._id %>?_method=PUT" method="POST" style="background-color: red;">
+    <form action="/notelist/update/<%= item._id %>?_method=PUT" method="POST"
+        style="background-color: rgb(196, 19, 19);">
         <input type="text" name="stock_symbol" placeholder="Symbol,eg. AAPL" value="<%= item.stock_symbol %>"
             style="background-color: black; color: red; margin-top: 10px;">
         <div class="container">
@@ -64,7 +65,7 @@ overflow: auto;">
             style="background-color: black; color: red; padding: 3px; font-size: 15px; margin: 5px; width: 200px;">Update
             Note</button>
     </form>
-    <div style="background-color: red;">
+    <div style="background-color: rgb(196, 19, 19);">
         <a href="/notelist">
             <button
                 style="background-color: black; color: red; padding: 3px; font-size: 15px; margin: 10px; width: 200px;">Back
