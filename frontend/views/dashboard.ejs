@@ -46,7 +46,8 @@
     </nav>
 
     <h2>Stock Data</h2>
-    <div style="background-color: rgb(196, 19, 19); padding-top: 20px;">
+    <div
+        style="background-color: rgb(196, 19, 19); padding-top: 20px;border-radius: 20px; border-color: black; border-width: 5px; border-style: solid; max-width: 80%; margin-left: 135px;">
         <form action="/searchview" method="GET">
             <% if (given.length> 0) { %>
                 <input type="text" placeholder="Enter Stock Ticker Symbol" name="symbol" value="<%= given %>"

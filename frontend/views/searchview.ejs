@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(173, 3, 3);">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(196, 19, 19);">
         <a class="navbar-brand" href="#">RUGANT</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,7 +53,8 @@
 
     <h2>Stock Data</h2>
     <div>
-        <div style="background-color: rgb(173, 3, 3); padding-top: 20px; margin-bottom: 5px;">
+        <div
+            style="background-color: rgb(196, 19, 19); padding-top: 20px; margin-bottom: 5px;border-radius: 20px; border-color: black; border-width: 5px; border-style: solid; max-width: 80%; margin-left: 135px;">
             <form action="/searchview" method="GET">
                 <input type="text" placeholder="Symbol, eg. AAPL" name="symbol"
                     style="background-color: black; color: red;">
@@ -72,9 +73,10 @@
         <br>
         <br>
         <% if (tempDataStore.length> 0) { %>
-            <ul style="background-color: rgb(173, 3, 3);">
+            <ul
+                style="background-color: rgb(196, 19, 19); border-radius: 20px; border-color: black; border-width: 5px; border-style: solid; max-width: 80%; margin-left: 135px;">
                 <li
-                    style="background-color: rgb(173, 3, 3); color: black; padding: 5px; font-size: 20px; font-weight: 850; text-align: left;">
+                    style="background-color: rgb(196, 19, 19); color: black; padding: 5px; font-size: 20px; font-weight: 850; text-align: left; border-radius: 20px;">
 
                     <div style="display: flex; justify-content: space-between;">
                         <div style="display: flex; align-items: center;">
@@ -114,7 +116,8 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-6" style="max-width: 100%;">
-                        <div class="container mt-3" style="background-color: rgb(173, 3, 3); max-width: 80%;">
+                        <div class="container mt-3"
+                            style="background-color: rgb(196, 19, 19); max-width: 80%;border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;">
                             <p style="color: black; font-size: 20px; font-weight: 600;">Description</p>
                             <div style="max-height: 400px; overflow: auto;">
                                 <p class="card-text text-wrap" style="font-size: 16px; color: black; padding: 20px;">
@@ -125,7 +128,8 @@
                     </div>
 
                     <div class="col-md-6" style="max-width: 100%;">
-                        <div style="width: 80%; background-color: rgb(173, 3, 3); color: black;">
+                        <div
+                            style="width: 80%; background-color: rgb(196, 19, 19); color: black; border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;">
                             <p style="color: black; font-size: 20px; font-weight: 600;">Market Sentiment</p>
                             <canvas id="barChart" height="100" width="200" style="padding: 10px;"></canvas>
                         </div>
@@ -138,7 +142,8 @@
             <var frame="<%= timing %>" id="timize"></var>
 
 
-            <div style="background-color: rgb(173, 3, 3); margin-left: 50px; margin-right: 50px;">
+            <div
+                style="background-color: rgb(196, 19, 19); margin-left: 50px; padding-top: 5px; margin-right: 50px;border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;">
                 <button onclick="getData('Intraday')"
                     style="background-color: black; color: red; width: fit-content;">Intraday</button>
                 <button onclick="getData('Daily')"
@@ -149,7 +154,7 @@
                     style="background-color: black; color: red; width: fit-content;">Monthly</button>
             </div>
             <canvas id="myChart" width="400" height="200"
-                style="background-color: rgb(173, 3, 3); color: black; margin-left: 50px; margin-right: 50px;"></canvas>
+                style="background-color: rgb(196, 19, 19); color: black; margin-left: 50px; margin-right: 50px;border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;"></canvas>
             <script>
 
                 var symboliz = document.getElementById('symbolize').getAttribute('symbol');
@@ -219,13 +224,15 @@
             </script>
 
             <br>
-            <p style="color: red; background-color: black; font-weight: bold; font-size: 20px;padding: 10px;">
+            <p
+                style="color: red; background-color: black; font-weight: bold; font-size: 20px;padding: 10px;border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;margin-left: 135px; margin-right: 135px;">
                 DETAILS
             </p>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-6" style="max-width: 90%; background-color: rgb(173, 3, 3); color: black;">
-                        <table class="table" style="background-color: rgb(173, 3, 3); color: black;">
+                    <div class="col-md-6"
+                        style="max-width: 90%; background-color: rgb(196, 19, 19); color: black; border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;">
+                        <table class="table" style="background-color: rgb(196, 19, 19); color: black;">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -283,9 +290,10 @@
 
                     </div>
 
-                    <div class="col-md-6" style="max-width: 90%; background-color: rgb(173, 3, 3); color: black;">
+                    <div class="col-md-6"
+                        style="max-width: 90%; background-color: rgb(196, 19, 19); color: black;border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;">
 
-                        <table class="table" style="background-color: rgb(173, 3, 3); color: black;">
+                        <table class="table" style="background-color: rgb(196, 19, 19); color: black;">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>

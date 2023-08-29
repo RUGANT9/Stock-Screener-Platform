@@ -219,7 +219,7 @@ router.get('/chart-data', async (req, res) => {
                 for (var tempData in tSeries) {
                     dates.push(i);
                     values.push(tSeries[tempData]['4. close']);
-                    volume.push((tSeries[tempData]['5. volume']) / 100000);
+                    volume.push((tSeries[tempData]['5. volume']) / 50000);
                     i = i + 1;
                     //tempDataStore.push({ "Date": tempData, "open": tSeries[tempData]['1. open'], "high": tSeries[tempData]['2. high'], "low": tSeries[tempData]['3. low'], "close": tSeries[tempData]['4. close'], "volume": tSeries[tempData]['5. volume'] })
                 }

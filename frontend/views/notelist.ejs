@@ -50,18 +50,22 @@
     </nav>
 
     <h2>NoteList</h2>
-    <a href="/new_note">
-        <button
-            style="background-color: black; color: red; padding: 5px; margin: 5px; width: 250px; font-size: 20px">ADD A
-            New NOTE</button>
-    </a>
+    <div
+        style="background-color: rgb(196, 19, 19);border-radius: 20px; border-color: black; border-width: 5px; border-style: solid; max-width: 40%; margin-left: 400px;">
+        <a href="/new_note">
+            <button
+                style="background-color: black; color: red; padding: 5px; margin: 5px; width: 250px; font-size: 20px">
+                ADD A
+                New NOTE</button>
+        </a>
+    </div>
     <br>
     <br>
     <% if (notes_list.length> 0) { %>
         <ul>
             <% notes_list.forEach((item)=> { %>
                 <li
-                    style="background-color: rgb(196, 19, 19); color: black; padding: 5px; font-size: 20px; font-weight: 850; text-align: left;">
+                    style="background-color: rgb(196, 19, 19); color: black; padding: 5px; font-size: 20px; font-weight: 850; text-align: left;border-radius: 20px; border-color: black; border-width: 5px; border-style: solid; max-width: 80%; margin-left: 135px;">
 
                     <div style="display: flex; justify-content: space-between;">
                         <div style="display: flex; align-items: center;">
