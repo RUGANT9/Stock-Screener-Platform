@@ -9,3 +9,5 @@ We have added the Notelist Feature where users can add, edit or delete notes whi
 Future Work:
 
 Offer Oauth Logins(Google, Facebook, Twitter)
+
+Add Technical Indicators
