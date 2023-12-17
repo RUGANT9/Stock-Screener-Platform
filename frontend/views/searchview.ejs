@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/common.css">
     <title>Search Result</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"
         integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g=="
@@ -14,225 +15,137 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.1/chartjs-plugin-zoom.min.js"
         integrity="sha512-wUYbRPLV5zs6IqvWd88HIqZU/b8TBx+I8LEioQ/UC0t5EMCLApqhIAnUg7EsAzdbhhdgW07TqYDdH3QEXRcPOQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-5AsuA32gvybT/G4P6EB9Xa1MBIpLlU0G+M9C4m2U2+Pd9ezIEmRbj1/Ht1+U2a/bU4ntLrjC6PgCVIlzm7QHyvA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(196, 19, 19);">
-        <a class="navbar-brand" href="#">RUGANT</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: black; height: 75px;">
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link active" href="dashboard">Dashboard</a>
+                    <a class="nav-link" href="dashboard" style="color: white;">RUGANT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="watchlist">Watchlist</a>
+                    <a class="nav-link" href="watchlist" style="color: white;">WatchList</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="notelist">NoteList</a>
+                    <a class="nav-link" href="/notelist" style="color: white;">NoteList</a>
                 </li>
             </ul>
-        </div>
-        <div class="profile">
-            <div class="profile-icon" style="margin-left: 50px;">
-                <img src="/assets/images/profile-user.png" alt="Profile Icon">
-                <a href="https://www.flaticon.com/free-icons/user" title="user icons">User icons created by Freepik -
-                    Flaticon</a>
-            </div>
-            <div class="dropdown" style="border-radius: 10px; width: 100px; background-color: rgb(196, 19, 19);">
-                <ul>
-                    <li><a href="profile">Profile</a></li>
-                    <li><a href="logout">Logout</a></li>
-                </ul>
-            </div>
+            <ul class="navbar-nav ml-auto">
+                <div class="profile" style="margin-right: 30px;">
+                    <div class="profile-icon" style="margin-left: 70px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="36" width="22"
+                            viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
+                            <path fill="#ffffff"
+                                d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
+                        </svg>
+                    </div>
+                    <div class="dropdown"
+                        style="border-radius: 10px; width: 130px; background-color: rgb(48, 48, 48); height: 110px;">
+                        <ul>
+                            <li><a href="profile" style="color: white;">Profile</a></li>
+                            <li><a href="logout" style="color: white;">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </ul>
         </div>
     </nav>
 
-    <h2>Stock Data</h2>
-    <div>
-        <div
-            style="background-color: rgb(196, 19, 19); padding-top: 20px; margin-bottom: 5px;border-radius: 20px; border-color: black; border-width: 5px; border-style: solid; max-width: 80%; margin-left: 135px;">
-            <form action="/searchview" method="GET">
-                <input type="text" placeholder="Symbol, eg. AAPL" name="symbol"
-                    style="background-color: black; color: red;">
-                <select name="select_time" id="select_time" required="true">
-                    <option value="" disabled selected>Choose Timeframe</option>
-                    <option value="Intraday">Intraday</option>
-                    <option value="Daily">Daily</option>
-                    <option value="Weekly">Weekly</option>
-                    <option value="Monthly">Monthly</option>
-                </select>
-                <br>
-                <button type="submit"
-                    style="padding-left: 2%; padding-right: 2%; background-color: black;color: red;">Search</button>
-            </form>
+    <form action="/searchview" method="GET" style="background-color: black; height: 140px;">
+        <div class="input-group mb-3" style="width: 800px; margin-left: 600px; height: 100px; padding-top: 20px;">
+            <input type="text" class="form-control" placeholder="Stock Symbol, eg. AAPL" aria-label=""
+                aria-describedby="basic-addon1" name="symbol"
+                style="font-size: 25px; font-weight: bolder; height: 60px; border-radius: 20px;">
         </div>
-        <br>
-        <br>
+    </form>
+
+    <div>
         <% if (tempDataStore.length> 0) { %>
-            <ul
-                style="background-color: rgb(196, 19, 19); border-radius: 20px; border-color: black; border-width: 5px; border-style: solid; max-width: 80%; margin-left: 135px;">
-                <li
-                    style="background-color: rgb(196, 19, 19); color: black; padding: 5px; font-size: 20px; font-weight: 850; text-align: left; border-radius: 20px;">
+            <div style="display: flex; justify-content: space-between; background-color: black;opacity: 95%;">
+                <div
+                    style="display: flex; align-items: center; font-size: 40px; font-weight: bolder; color: white; margin-left: 900px;">
+                    <%= symbol %>
+                </div>
+                <div style="display: flex;">
+                    <% if (show_add_delete.length===0) { %>
+                        <form action="/watchlist/add" method="POST">
+                            <input type="hidden" name="stock_symbol" value="<%= symbol %>">
+                            <button type="submit"
+                                style="background-color: rgb(48, 48, 48); color: white; padding: 3px; font-size: 20px; margin: 5px; width: 180px; font-weight: bolder;">Add
+                                to
+                                Watchlist</button>
+                        </form>
+                        <% } else { %>
+                            <form action="/watchlist/delete/<%= show_add_delete %>?_method=DELETE" method="POST">
 
-                    <div style="display: flex; justify-content: space-between;">
-                        <div style="display: flex; align-items: center;">
-                            <%= symbol %>
-                        </div>
-                        <div style="display: flex;">
-                            <% if (show_add_delete.length===0) { %>
-                                <form action="/watchlist/add" method="POST">
+                                <button type="submit"
+                                    style="background-color: rgb(48, 48, 48); color: white; padding: 3px; font-size: 20px; margin: 5px; width: 180px; font-weight: bolder;">Delete
+                                    from
+                                    Watchlist</button>
+                            </form>
+                            <% } %>
+                                <form action="/download" method="GET">
+                                    <input type="hidden" name="timing" value="Daily">
                                     <input type="hidden" name="stock_symbol" value="<%= symbol %>">
-                                    <button type="submit"
-                                        style="background-color: black; color: red; padding: 3px; font-size: 15px; margin: 5px; width: 120px;">Add
-                                        to
-                                        Watchlist</button>
+                                    <button
+                                        style="background-color: rgb(48, 48, 48); color: white; padding: 3px; font-size: 25px; margin: 5px; width: 50px;"><svg
+                                            xmlns="http://www.w3.org/2000/svg" height="26" width="26"
+                                            viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
+                                            <path fill="#ffffff"
+                                                d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
+                                        </svg></button>
                                 </form>
-                                <% } else { %>
-                                    <form action="/watchlist/delete/<%= show_add_delete %>?_method=DELETE"
-                                        method="POST">
-
-                                        <button type="submit"
-                                            style="background-color: black; color: red; padding: 3px; font-size: 15px; margin: 5px; width: 150px;">Delete
-                                            from
-                                            Watchlist</button>
-                                    </form>
-                                    <% } %>
-                                        <form action="/download" method="GET">
-                                            <input type="hidden" name="timing" value="<%= timing %>">
-                                            <input type="hidden" name="stock_symbol" value="<%= symbol %>">
-                                            <button
-                                                style="background-color: black; color: red; padding: 3px; font-size: 15px; margin: 5px; width: 150px;">Download
-                                                Data</button>
-                                        </form>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-
+                </div>
+            </div>
+            <var symbol="<%= symbol %>" id="symbolize"></var>
+            <div
+                style="background-color: black; margin-left: 50px; margin-right: 50px;border-radius: 20px;opacity: 95%; padding-top: 10px;">
+                <button onclick="drawChart('<%= symbol %>' , 'Intraday')"
+                    style="background-color: rgb(48, 48, 48); color: white; width: fit-content;">Intraday</button>
+                <button onclick="drawChart('<%= symbol %>', 'Daily')"
+                    style="background-color: rgb(48, 48, 48); color: white; width: fit-content;">Daily</button>
+                <button onclick="drawChart('<%= symbol %>', 'Weekly')"
+                    style="background-color: rgb(48, 48, 48); color: white; width: fit-content;">Weekly</button>
+                <button onclick="drawChart('<%= symbol %>', 'Monthly')"
+                    style="background-color: rgb(48, 48, 48); color: white; width: fit-content;">Monthly</button>
+            </div>
+            <br>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-6" style="max-width: 100%;">
+                    <div class="col-md-8" style="background-color: black; opacity: 95%; padding-left: 20px;">
+                        <svg id="chart-container" style="height: 600; width: 1200;"
+                            onload="drawChart('<%= symbol %>' , 'Intraday')"></svg>
+                    </div>
+                    <div class="col-md-4" style="max-width: 100%;">
                         <div class="container mt-3"
-                            style="background-color: rgb(196, 19, 19); max-width: 80%;border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;">
-                            <p style="color: black; font-size: 20px; font-weight: 600;">Description</p>
-                            <div style="max-height: 400px; overflow: auto;">
-                                <p class="card-text text-wrap" style="font-size: 16px; color: black; padding: 20px;">
+                            style="background-color: black; max-width: 90%;border-radius: 20px; opacity: 95%;">
+                            <div style="max-height: 700px; overflow: auto;">
+                                <p class="card-text text-wrap" style="font-size: 25px; color: white; padding: 50px;">
                                     <%= tempDataStore[0].Description %>
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6" style="max-width: 100%;">
-                        <div
-                            style="width: 80%; background-color: rgb(196, 19, 19); color: black; border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;">
-                            <p style="color: black; font-size: 20px; font-weight: 600;">Market Sentiment</p>
-                            <canvas id="barChart" height="100" width="200" style="padding: 10px;"></canvas>
-                        </div>
-                    </div>
                 </div>
             </div>
             <br>
             <br>
-            <var symbol="<%= symbol %>" id="symbolize"></var>
-            <var frame="<%= timing %>" id="timize"></var>
-
-
-            <div
-                style="background-color: rgb(196, 19, 19); margin-left: 50px; padding-top: 5px; margin-right: 50px;border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;">
-                <button onclick="getData('Intraday')"
-                    style="background-color: black; color: red; width: fit-content;">Intraday</button>
-                <button onclick="getData('Daily')"
-                    style="background-color: black; color: red; width: fit-content;">Daily</button>
-                <button onclick="getData('Weekly')"
-                    style="background-color: black; color: red; width: fit-content;">Weekly</button>
-                <button onclick="getData('Monthly')"
-                    style="background-color: black; color: red; width: fit-content;">Monthly</button>
-            </div>
-            <canvas id="myChart" width="400" height="200"
-                style="background-color: rgb(196, 19, 19); color: black; margin-left: 50px; margin-right: 50px;border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;"></canvas>
-            <script>
-
-                var symboliz = document.getElementById('symbolize').getAttribute('symbol');
-                var timez = document.getElementById('timize').getAttribute('frame');
-                var angle = document.getElementById('angler').getAttribute('angling');
-                function getData(option = 'Intraday') {
-                    Promise.all([
-                        fetch('/chart-data?symbol=' + symboliz + '&timing=' + `${option}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                const ctx = document.getElementById('myChart').getContext('2d');
-                                const canvas = document.getElementById('myChart');
-                                // Check if a chart instance already exists
-                                if (canvas) {
-                                    const context = canvas.getContext('2d');
-                                    const xxy = Chart.getChart("myChart");
-                                    xxy.destroy();
-                                }
-                                const chartData = {
-                                    labels: data.datesss,
-                                    datasets: [{
-                                        label: 'Price Graph',
-                                        data: data.valuesss,
-                                        backgroundColor: 'rgba(255,0,0, 0.2)',
-                                        borderColor: 'rgba(0, 0, 0, 1)',
-                                        borderWidth: 5
-                                    }, {
-                                        type: 'bar',
-                                        label: 'Volume',
-                                        data: data.volumesss,
-                                        backgroundColor: 'rgba(0,0,0, 0.2)',
-                                        borderColor: 'rgba(0, 0, 0, 1)',
-                                    }]
-                                };
-
-                                var stch = new Chart(ctx, {
-                                    type: 'line', // Change the type based on your chart preference (line, bar, etc.)
-                                    data: chartData,
-                                    options: {
-                                        scales: {
-                                            x: {
-                                                type: 'linear', // Specify the x-axis type as 'linear' for numerical values
-                                                position: 'bottom', // Position the x-axis at the bottom
-                                            },
-                                            y: {
-                                                beginAtZero: false, // Start the y-axis at zero
-                                            },
-                                        },
-                                        plugins: {
-                                            zoom: {
-                                                zoom: {
-                                                    wheel: {
-                                                        enabled: true,
-                                                    },
-                                                    pinch: {
-                                                        enabled: true
-                                                    },
-                                                    mode: 'xy',
-                                                }
-                                            }
-                                        }
-                                    }
-                                });
-                            })
-                    ])
-                }
-            </script>
 
             <br>
             <p
-                style="color: red; background-color: black; font-weight: bold; font-size: 20px;padding: 10px;border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;margin-left: 135px; margin-right: 135px;">
+                style="color: white; background-color: black; font-weight: bold; font-size: 20px;padding: 10px;border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;margin-left: 135px; margin-right: 135px;">
                 DETAILS
             </p>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-6"
-                        style="max-width: 90%; background-color: rgb(196, 19, 19); color: black; border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;">
-                        <table class="table" style="background-color: rgb(196, 19, 19); color: black;">
+                    <div class="col-md-3"
+                        style="max-width: 90%; background-color: black; color: white; border-radius: 20px; opacity: 95%; margin-left: 40px;">
+                        <table class="table" style="background-color: black; color: white;">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -290,10 +203,10 @@
 
                     </div>
 
-                    <div class="col-md-6"
-                        style="max-width: 90%; background-color: rgb(196, 19, 19); color: black;border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;">
+                    <div class="col-md-3"
+                        style="max-width: 90%; background-color: black; color: white;border-radius: 20px; opacity: 95%;">
 
-                        <table class="table" style="background-color: rgb(196, 19, 19); color: black;">
+                        <table class="table" style="background-color: black; color: white;">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -350,6 +263,13 @@
                         </table>
 
                     </div>
+                    <div class="col-md-5" style="max-width: 90%;">
+                        <div style="width: 90%; background-color: black; color: white; border-radius: 20px;">
+                            <p style="color: white; font-size: 20px; font-weight: bold; padding: 20px;">Market Sentiment
+                            </p>
+                            <canvas id="barChart" height="100" width="200" style="padding: 10px;"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
             <% }else { %>
@@ -357,7 +277,7 @@
                 <% } %>
     </div>
 
-    <a href="/watchlist" type="button" style="background-color: black; color: red; padding: 10px;">Back
+    <a href="/watchlist" type="button" style="background-color: black; color: rgb(48, 48, 48); padding: 10px;">Back
         To
         WatchList</a>
 

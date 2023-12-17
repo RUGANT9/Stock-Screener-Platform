@@ -14,6 +14,30 @@ const router = express.Router();
 // Routes will be defined here
 
 
+// GET request for Dashboard Page
+router.get('/dashboard', isLoggedIn, async (req, res) => {
+    if (req.query.given) {
+        const given = req.query.given;
+        try {
+            const tempDataStore = [];
+            // Render the EJS template with the fetched data
+            res.render('dashboard', { tempDataStore, given });
+        } catch (err) {
+            console.error(err);
+        }
+    } else {
+        const given = "";
+        try {
+            const tempDataStore = [];
+            // Render the EJS template with the fetched data
+            res.render('dashboard', { tempDataStore, given });
+        } catch (err) {
+            console.error(err);
+        }
+    }
+});
+
+
 // GET request for Login Page
 router.get('/login', (req, res) => {
     res.render("login");
@@ -38,28 +62,6 @@ router.get('/logout', (req, res) => {
 });
 
 
-// GET request for Dashboard Page
-router.get('/dashboard', isLoggedIn, async (req, res) => {
-    if (req.query.given) {
-        const given = req.query.given;
-        try {
-            const tempDataStore = [];
-            // Render the EJS template with the fetched data
-            res.render('dashboard', { tempDataStore, given });
-        } catch (err) {
-            console.error(err);
-        }
-    } else {
-        const given = "";
-        try {
-            const tempDataStore = [];
-            // Render the EJS template with the fetched data
-            res.render('dashboard', { tempDataStore, given });
-        } catch (err) {
-            console.error(err);
-        }
-    }
-});
 
 
 // GET request for Signup Page
@@ -147,6 +149,7 @@ router.post('/signup', async (req, res) => {
 
 // INFO
 router.get('/searchview', isLoggedIn, async (req, res) => {
+    console.log(req.query.symbol);
     symb = req.query.symbol;
     const lister = await Watchlist.find({ user_id: req.user._id });
     var show_add_delete = "";
@@ -155,9 +158,9 @@ router.get('/searchview', isLoggedIn, async (req, res) => {
             show_add_delete = item._id
         }
     })
-    const timing = req.query.select_time;
+    // const timing = req.query.select_time;
     const tempDataStore = [];
-    req.session.timing = timing;
+    req.session.timing = 'Daily' //timing;
 
     // Get the company overview
     axios('https://www.alphavantage.co/query?function=OVERVIEW&symbol=' + symb + '&apikey=JP083ZCQZTWKDTSF')
@@ -165,7 +168,7 @@ router.get('/searchview', isLoggedIn, async (req, res) => {
             const symbol = req.query.symbol.toUpperCase();
             const data = response.data;
             tempDataStore.push({ "Name": data.Name, "BookValue": data.BookValue, "Sector": data.Sector, "MarketCapitalization": data.MarketCapitalization, "EPS": data.EPS, "DividendPerShare": data.DividendPerShare, "Description": data.Description, "PEGRatio": data.PEGRatio, "ReturnOnEquityTTM": data.ReturnOnEquityTTM, "GrossProfitTTM": data.GrossProfitTTM, "WeekHigh": data['52WeekHigh'], "WeekLow": data['52WeekLow'], "DayMovingAverage": data['50DayMovingAverage'] });
-            res.render('searchview', { tempDataStore, symbol, timing, show_add_delete });
+            res.render('searchview', { tempDataStore, symbol, show_add_delete });
         })
         .catch((error) => {
             console.log(error);
@@ -217,7 +220,7 @@ router.get('/chart-data', async (req, res) => {
                 var volume = [];
                 var i = 0;
                 for (var tempData in tSeries) {
-                    dates.push(i);
+                    dates.push(tempData);
                     values.push(tSeries[tempData]['4. close']);
                     volume.push((tSeries[tempData]['5. volume']) / 50000);
                     i = i + 1;

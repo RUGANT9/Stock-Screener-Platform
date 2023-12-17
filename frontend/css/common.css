@@ -5,6 +5,9 @@ body {
     background-repeat: no-repeat;
     background-position: top;
     text-align: center;
+    align-items: center;
+    justify-content: center;
+    color: brown;
 }
 
 
@@ -12,13 +15,12 @@ input,
 button {
     padding: 5px;
     margin-bottom: 20px;
-    font-size: 20px;
-    font-weight: 500;
+    font-size: 25px;
+    font-weight: 100;
     background-color: rgb(243, 10, 10);
-    color: black;
-    border-radius: 10px;
-    transition: box-shadow 0.3s ease;
-    width: 350px;
+    color: brown;
+    border-radius: 5px;
+    width: 300px;
 
 }
 
@@ -28,18 +30,35 @@ select {
     font-weight: bold;
     background-color: black;
     border-radius: 10px;
-    color: red;
+    color: brown;
     width: 300px;
 }
 
-h1,
+/* h1,
 h2 {
-    color: rgb(243, 10, 10);
+    color: brown;
     font-size: 30px;
     font-weight: 500;
     background-color: black;
+} */
+
+h1 {
+    opacity: 0;
+    /* Initially set the opacity to 0 */
+    transform: translateY(300px);
+    /* Initially move the element down */
+    animation: slideUp 2s ease-out forwards;
+    /* Apply the animation */
 }
 
+@keyframes slideUp {
+    to {
+        opacity: 1;
+        /* At the end of the animation, set opacity to 1 */
+        transform: translateY(0);
+        /* At the end of the animation, move the element up */
+    }
+}
 
 #form_login {
     padding-top: 10%;
@@ -48,13 +67,12 @@ h2 {
 
 button:hover {
     cursor: pointer;
-    box-shadow: 0 20px 50px rgba(10, 13, 211, 0.2);
 }
 
 a {
-    font-size: 20px;
+    font-size: 25px;
     font-weight: 800;
-    color: rgb(243, 10, 10);
+    color: brown;
 }
 
 td {
@@ -64,7 +82,7 @@ td {
 
 
 ::placeholder {
-    color: red;
+    color: brown;
     font-size: 20px;
     font-weight: 500;
 }
@@ -165,5 +183,5 @@ td {
 }
 
 .dropdown li a:hover {
-    background-color: #f5f5f5;
+    background-color: black;
 }

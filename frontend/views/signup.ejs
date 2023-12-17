@@ -11,17 +11,20 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(196, 19, 19);">
-        <a class="navbar-brand" href="#">RUGANT</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: black; height: 75px;">
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="login">Login</a>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="dashboard" style="color: white;">RUGANT Screener</a>
                 </li>
+            </ul>
+            <ul class="navbar-nav ml-auto"> <!-- Use ml-auto for right alignment -->
+                <li class="nav-item">
+                    <a class="nav-link" href="login" style="color: white;">Login</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="signup" style="color: white;">Signup</a>
+                </li> -->
             </ul>
         </div>
     </nav>
@@ -29,34 +32,34 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-    <h2>SIGNUP</h2>
-    <div style="background-color: rgb(196, 19, 19);">
+    <div
+        style="background-color: black; opacity: 95%; width: fit-content;padding: 100px; margin-left: 750px; margin-top: 50px; border-radius: 10px;">
         <form action="/signup" id="form_signup" method="POST">
             <input type="text" name="user[first_name]" id="firstname_signup" required="true" placeholder="First Name"
-                style="background-color: black; margin-top: 20px;">
+                style="background-color: white; margin-top: 20px;font-size: 25px; font-weight: bold; color: black;">
             <br>
             <input type="text" name="user[last_name]" id="lastname_signup" required="true" placeholder="Last Name"
-                style="background-color: black;">
+                style="background-color: white;font-size: 25px; font-weight: bold; color: black;">
             <br>
             <input type="text" name="user[username]" id="username_signup" required="true" placeholder="Username"
-                style="background-color: black;">
+                style="background-color: white;font-size: 25px; font-weight: bold; color: black;">
             <br>
             <input type="password" name="user[password]" id="password_signup" required="true" placeholder="Password"
-                style="background-color: black;">
+                style="background-color: white;font-size: 25px; font-weight: bold; color: black;">
             <br>
             <input type="email" name="user[email]" id="email_signup" placeholder="Email" required="true"
-                style="background-color: black;">
+                style="background-color: white;font-size: 25px; font-weight: bold; color: black;">
             <br>
             <input type="number" name="user[mobile_number]" id="mobile_number_signup" placeholder="Mobile Number"
-                style="background-color: black;" required="true">
+                style="background-color: white; font-size: 25px; font-weight: bold; color: black;" required="true">
             <br>
-            <button type="submit" id="signup_button" style="background-color: black; color: red;">SIGNUP</button>
+            <button type="submit" id="signup_button"
+                style="background-color: rgb(48, 48, 48); font-weight: bolder; color: white; border-radius: 10px;">SIGNUP</button>
         </form>
+        <br>
+        <br>
+        <a href="/login" style="font-size: 20px;">Already have an Account?</a>
     </div>
-    <br>
-    <br>
-
-    <a href="/login">Already Have an Account?</a>
 </body>
 
 </html>

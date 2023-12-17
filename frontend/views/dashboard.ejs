@@ -7,70 +7,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-5AsuA32gvybT/G4P6EB9Xa1MBIpLlU0G+M9C4m2U2+Pd9ezIEmRbj1/Ht1+U2a/bU4ntLrjC6PgCVIlzm7QHyvA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Rugant | Dashboard</title>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(196, 19, 19);">
-        <a class="navbar-brand" href="about">RUGANT</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: black; height: 75px;">
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="dashboard">Dashboard</a>
+                    <a class="nav-link" href="dashboard" style="color: white;">RUGANT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="watchlist">WatchList</a>
+                    <a class="nav-link" href="watchlist" style="color: white;">WatchList</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="notelist">NoteList</a>
+                    <a class="nav-link" href="/notelist" style="color: white;">NoteList</a>
                 </li>
             </ul>
-        </div>
-        <div class="profile">
-            <div class="profile-icon" style="margin-left: 50px;">
-                <img src="/assets/images/profile-user.png" alt="Profile Icon">
-                <a href="https://www.flaticon.com/free-icons/user" title="user icons">User icons created by Freepik -
-                    Flaticon</a>
-            </div>
-            <div class="dropdown" style="border-radius: 10px; width: 100px; background-color: rgb(196, 19, 19);">
-                <ul>
-                    <li><a href="profile">Profile</a></li>
-                    <li><a href="logout">Logout</a></li>
-                </ul>
-            </div>
+            <ul class="navbar-nav ml-auto">
+                <div class="profile" style="margin-right: 30px;">
+                    <div class="profile-icon" style="margin-left: 70px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="36" width="22"
+                            viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
+                            <path fill="#ffffff"
+                                d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
+                        </svg>
+                    </div>
+                    <div class="dropdown"
+                        style="border-radius: 10px; width: 130px; background-color: rgb(48, 48, 48); height: 110px;">
+                        <ul>
+                            <li><a href="profile" style="color: white;">Profile</a></li>
+                            <li><a href="logout" style="color: white;">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </ul>
         </div>
     </nav>
-
-    <h2>Stock Data</h2>
-    <div
-        style="background-color: rgb(196, 19, 19); padding-top: 20px;border-radius: 20px; border-color: black; border-width: 5px; border-style: solid; max-width: 80%; margin-left: 135px;">
-        <form action="/searchview" method="GET">
-            <% if (given.length> 0) { %>
-                <input type="text" placeholder="Enter Stock Ticker Symbol" name="symbol" value="<%= given %>"
-                    style="width: 300px; color: red; background-color: black;">
-                <% } else { %>
-                    <input type="text" placeholder="Symbol, eg. AAPL" name="symbol"
-                        style="width: 300px; padding: 5px; font-weight: bold; background-color: black; color: red;">
+    <form action="/searchview" method="GET" style="background-color: black; height: 140px;">
+        <div class="input-group mb-3" style="width: 800px; margin-left: 600px; height: 100px; padding-top: 20px;">
+            <% if (given) { %>
+                <input type="text" class="form-control" placeholder="Stock Symbol, eg. AAPL" aria-label=""
+                    aria-describedby="basic-addon1" name="symbol" value="<%= given %>"
+                    style="font-size: 25px; font-weight: bolder; height: 60px; border-radius: 20px;">
+                <% }else{ %>
+                    <input type="text" class="form-control" placeholder="Stock Symbol, eg. AAPL" aria-label=""
+                        aria-describedby="basic-addon1" name="symbol" value="<%= given %>"
+                        style="font-size: 25px; font-weight: bolder; height: 60px; border-radius: 20px;">
                     <% } %>
-                        <select name="select_time" id="select_time">
-                            <option value="" disabled selected>Choose Timeframe</option>
-                            <option value="Intraday">Intraday</option>
-                            <option value="Daily">Daily</option>
-                            <option value="Weekly">Weekly</option>
-                            <option value="Monthly">Monthly</option>
-                        </select>
-                        <p><button type="submit"
-                                style="padding: 3px; font-size: 20px; font-weight: bold; background-color: black; color: red; width: 200px;">Search</button>
-                        </p>
+        </div>
+    </form>
+    <h1 style="color: white; font-size: 100px; text-align: left; background-color: rgb(0 0 0 / 70%);">
+        Trading Made
+        Easy, <br> by Rugant</h1>
 
-        </form>
-
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 </body>
 

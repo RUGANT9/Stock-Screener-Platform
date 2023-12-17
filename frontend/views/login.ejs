@@ -12,66 +12,43 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(196, 19, 19);">
-        <a class="navbar-brand" href="about">RUGANT</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: black; height: 75px;">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="dashboard" style="color: white;">RUGANT</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto"> <!-- Use ml-auto for right alignment -->
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="login" style="color: white;">Login</a>
+                </li> -->
+                <li class="nav-item">
+                    <a class="nav-link" href="signup" style="color: white;">Signup</a>
+                </li>
+            </ul>
+        </div>
     </nav>
-    <br>
-    <br>
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-5">
-                <form action="/login" id="form_login" method="POST"
-                    style="background-color: rgb(196, 19, 19); border-radius: 20px; border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;">
-                    <ul>
-                        <input type="text" name="username" id="username" required="true" placeholder="Username" style="color:
-                        red; background-color: black; font-weight: 1000;">
-                        <input type="password" name="password" id="password" required="true" placeholder="Password"
-                            minlength="8" style="color:
-                        red; background-color: black; font-weight: 1000;">
-                    </ul>
-                    <button style="width: 120px; color: red; background-color:black; font-weight:
-                    700;">Login</button>
-                </form>
+        <div style="text-align: center; width: 600px; margin-left: 700px; margin-top: 200px;">
+            <form action="/login" id="form_login" method="POST"
+                style="background-color: black; border-radius: 20px; height: 500px; text-align: center; opacity: 95%;">
+
+                <ul>
+                    <input type="text" name="username" id="username" required="true" placeholder="Username" style="color:
+                        black; background-color: white; font-weight: 500; height: 60px;">
+                    <input type="password" name="password" id="password" required="true" placeholder="Password"
+                        minlength="8" style="color:
+                        black; background-color: white; font-weight: 500; height: 60px;">
+                </ul>
+                <button style="width: 230px; color: white; background-color:rgb(48, 48, 48); font-weight:
+                    700; font-size: 30px; margin-left: 40px; border-radius: 10px;">Login</button>
                 <br>
-                <a href="/signup" style="font-size: larger; font-weight: 800; background-color: black;">NEW
-                    USER?</a>
-            </div>
-            <div class="col-md-7"
-                style="background-color: rgb(196, 19, 19); max-width: 30%; margin-left: 300px; border-radius: 20px; border-color: black; border-width: 5px; border-style: solid;">
-                <%= success %>
-                    <div class="row">
-                        <div class="col">
-                            <div>
-                                <p class="card-text text-wrap"
-                                    style="font-size: 20px; font-weight: bold; color: black; padding: 30px;">
-                                    Rugant is a basic stock screener application.The application leverages real-time
-                                    data
-                                    and presents the most relevant results. It is a powerful tool designed to help
-                                    investors
-                                    and
-                                    traders filter
-                                    through a vast array of financial instruments to find potential investment
-                                    opportunities
-                                    that
-                                    meet specific
-                                    criteria.With its user-friendly interface and customizable filters, it empowers
-                                    users to
-                                    make
-                                    informed
-                                    decisions, saving them time and effort in their quest for profitable investments in
-                                    the
-                                    dynamic
-                                    world of the
-                                    stock market.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-            </div>
+
+                <a href="/signup"
+                    style="font-size: larger; font-weight: 800; color: rgb(177, 20, 20); width: 200px; margin-left: 30px;">New
+                    User?</a>
+            </form>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
